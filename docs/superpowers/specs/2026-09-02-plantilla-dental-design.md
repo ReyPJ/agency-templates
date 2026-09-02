@@ -137,6 +137,12 @@ export interface Clinica {
   doctores: Doctor[];          // 1..N
   especialidades: Especialidad[]; // 1..N
 
+  // metodo, resenas y ubicacion cargan su propio titulo; doctores y
+  // especialidades son arrays pelados, así que sus encabezados viven aquí.
+  // Sin esto terminarían escritos a mano en index.astro, que es un dato de
+  // cliente fuera de clinica.ts y rompe la reutilización.
+  titulos: { doctores: string; especialidades: string };
+
   calificacion?: Calificacion;
   metodo?: Metodo;
   resenas?: Resenas;
@@ -245,6 +251,9 @@ la barra fija de WhatsApp reserva su altura al final del documento para no tapar
 contenido; el display escala con `clamp()` para no romper entre breakpoints.
 
 ## 8. Especificación por sección
+
+**Favicon.** El logo real del cliente, nunca el de Astro: es lo primero que ve el
+prospecto en la pestaña y el delator más barato de que esto es una plantilla.
 
 **Nav.** Wordmark `AXX Dental` compuesto en Inter 600 con tracking apretado. Sin menú
 de navegación y sin hamburguesa: son cinco secciones y el scroll basta; un menú móvil
