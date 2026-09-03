@@ -73,12 +73,28 @@ test("the Google rating is 4.9 across 84 reviews", () => {
   assert.equal(clinic.rating?.source, "Google");
 });
 
+// The hero states the score and the band states the count. Saying the same
+// number twice, a screen apart, reads as an oversight.
+test("the highlight band does not repeat the hero's score", () => {
+  const values = clinic.highlights!.map((h) => h.value);
+  assert.ok(!values.includes(String(clinic.rating!.score)));
+});
+
 test("the hero headline is split into lines for the staggered reveal", () => {
   assert.ok(clinic.hero.headline.length >= 2);
   assert.match(
     clinic.hero.headline.join(" "),
     /Antes de tocar un diente, escuchamos\./,
   );
+});
+
+// The band states counts as facts, so they must match the data they claim to
+// summarise. Without this they drift the first time a specialty is added.
+test("the highlight numbers match the real counts", () => {
+  const values = clinic.highlights!.map((h) => h.value);
+  assert.ok(values.includes(String(clinic.specialties.items.length)));
+  assert.ok(values.includes(String(clinic.doctors.people.length)));
+  assert.ok(values.includes(String(clinic.rating!.count)));
 });
 
 test("no banned copy anywhere in the client data", () => {

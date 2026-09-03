@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
+import Highlights from "../components/Highlights.astro";
 import Method from "../components/Method.astro";
 import Doctors from "../components/Doctors.astro";
 import Specialties from "../components/Specialties.astro";
@@ -27,6 +28,8 @@ const ctaUrl = whatsappUrl(clinic);
       rating={clinic.rating}
       ctaUrl={ctaUrl}
     />
+
+    {clinic.highlights && <Highlights highlights={clinic.highlights} />}
 
     {clinic.method && <Method method={clinic.method} />}
 

@@ -1,0 +1,31 @@
+---
+import type { Highlight } from "../data/types.ts";
+
+interface Props {
+  highlights: Highlight[];
+}
+
+const { highlights } = Astro.props;
+---
+
+{/*
+  A band of hard numbers directly under the hero, so a visitor can size the
+  clinic up before scrolling. It is the page's one dense horizontal beat: the
+  sections below all breathe, and without something tight early on the whole
+  page reads as sparse.
+
+  Facts only — counts and a rating. No claims, because a claim in this
+  position is exactly what every competitor's site already says.
+*/}
+<section class="border-y border-line bg-surface">
+  <dl class="shell grid gap-8 py-10 sm:grid-cols-3 sm:gap-10 md:py-12">
+    {highlights.map((item) => (
+      <div class="flex items-baseline gap-4 sm:block">
+        <dt class="font-display text-highlight tabular-nums text-accent">
+          {item.value}
+        </dt>
+        <dd class="text-small text-ink-soft sm:mt-2 sm:max-w-[22ch]">{item.label}</dd>
+      </div>
+    ))}
+  </dl>
+</section>

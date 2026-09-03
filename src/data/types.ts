@@ -114,6 +114,14 @@ export interface Hours {
   time: string;
 }
 
+/** Hard numbers, shown as a band right below the hero. Deliberately a short
+ *  list of facts rather than marketing claims — the point is that a visitor
+ *  can size the clinic up in two seconds without scrolling. */
+export interface Highlight {
+  value: string;
+  label: string;
+}
+
 /** The last thing a visitor reads before leaving, so it carries the final
  *  call to action rather than trailing off into contact details. */
 export interface Closing {
@@ -142,6 +150,7 @@ export interface Clinic {
   doctors: DoctorsSection;
   specialties: SpecialtiesSection;
   closing: Closing;
+  highlights?: Highlight[];
 
   rating?: Rating;
   method?: Method;

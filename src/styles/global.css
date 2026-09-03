@@ -59,6 +59,10 @@
   --text-display--line-height: 0.94;
   --text-display--letter-spacing: -0.022em;
 
+  --text-highlight: clamp(2.5rem, 1.6rem + 3.4vw, 4rem);
+  --text-highlight--line-height: 0.9;
+  --text-highlight--letter-spacing: -0.02em;
+
   --text-heading: clamp(1.875rem, 1.2rem + 2.7vw, 3rem);
   --text-heading--line-height: 1.04;
   --text-heading--letter-spacing: -0.018em;

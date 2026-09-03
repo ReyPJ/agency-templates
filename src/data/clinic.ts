@@ -57,7 +57,6 @@ const data: Clinic = {
     score: 4.9,
     count: 84,
     source: "Google",
-    updatedAgo: "hace 2 semanas",
   },
 
   method: {
@@ -155,6 +154,14 @@ const data: Clinic = {
       },
     ],
   },
+
+  // Values are asserted against the real counts in the test suite, so they
+  // cannot quietly drift out of sync with the data above.
+  highlights: [
+    { value: "7", label: "especialidades bajo un mismo techo" },
+    { value: "2", label: "especialistas que te atienden en persona" },
+    { value: "84", label: "reseñas en Google, con 4.9 de calificación" },
+  ],
 
   closing: {
     headline: "Los resultados se explican, no se imponen.",
