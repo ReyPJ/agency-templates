@@ -22,12 +22,7 @@ const ctaUrl = whatsappUrl(clinic);
   <Nav clinic={clinic} />
 
   <main>
-    <Hero
-      hero={clinic.hero}
-      brand={clinic.brand}
-      rating={clinic.rating}
-      ctaUrl={ctaUrl}
-    />
+    <Hero hero={clinic.hero} rating={clinic.rating} ctaUrl={ctaUrl} />
 
     {clinic.highlights && <Highlights highlights={clinic.highlights} />}
 

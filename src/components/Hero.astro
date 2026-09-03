@@ -1,14 +1,13 @@
 ---
-import type { Brand, Hero, Rating } from "../data/types.ts";
+import type { Hero, Rating } from "../data/types.ts";
 
 interface Props {
   hero: Hero;
-  brand: Brand;
   rating?: Rating;
   ctaUrl: string;
 }
 
-const { hero, brand, rating, ctaUrl } = Astro.props;
+const { hero, rating, ctaUrl } = Astro.props;
 ---
 
 {/*
@@ -18,6 +17,10 @@ const { hero, brand, rating, ctaUrl } = Astro.props;
 
   The rating sits beside the call to action rather than above the headline:
   proof belongs where the decision gets made, not floating over a title.
+
+  The tagline is deliberately absent here. Parked in the corner it had no
+  visual relationship to anything around it and read as a leftover; it earns
+  its place in the colophon, next to the name it belongs to.
 */}
 <section class="shell flex min-h-[78svh] flex-col justify-end pt-28 pb-14 md:min-h-[84svh] md:pt-36 md:pb-20">
   {/* One span per line: the reveal animates them in sequence, and the ragged
@@ -28,7 +31,7 @@ const { hero, brand, rating, ctaUrl } = Astro.props;
     {hero.headline.map((line) => <span class="hero-line block">{line}</span>)}
   </h1>
 
-  <p class="measure mt-8 text-lead text-ink-soft md:mt-10">{hero.subhead}</p>
+  <p class="measure mt-8 text-lead md:mt-10">{hero.subhead}</p>
 
   {/* The hero's bottom edge is composed as one full-width line rather than
       left as loose pieces: action and proof anchor the left, the clinic's
@@ -64,11 +67,6 @@ const { hero, brand, rating, ctaUrl } = Astro.props;
           de {rating.source}{rating.updatedAgo && `, la más reciente ${rating.updatedAgo}`}.
         </span>
       </p>
-    )}
-
-    {/* The clinic signing its name before it shows its work. */}
-    {brand.tagline && (
-      <p class="text-small text-ink-soft md:ml-auto">{brand.tagline}</p>
     )}
   </div>
 </section>

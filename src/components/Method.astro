@@ -20,8 +20,8 @@ const { method } = Astro.props;
   what makes numbering them honest. The numerals come from a CSS counter, so
   the markup carries the order and the stylesheet carries the look.
 */}
-<section class="method bg-inverted-background text-inverted-ink">
-  <div class="shell py-20 md:py-28">
+<section class="method relative isolate overflow-hidden bg-inverted-background text-inverted-ink">
+  <div class="shell relative py-20 md:py-28">
     <h2 class="font-display text-heading measure">{method.title}</h2>
 
     {method.intro && (
@@ -42,6 +42,46 @@ const { method } = Astro.props;
 <style>
   .method {
     counter-reset: step;
+  }
+
+  /* Diagnosis here means reading backlit images, so the block behaves like the
+     panel they are read on: a soft pool of light behind the content instead of
+     a flat rectangle. The clinic's own mint is the light. */
+  .method::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(
+        62% 78% at 22% 8%,
+        color-mix(in oklab, var(--color-accent-light) 16%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        48% 60% at 88% 96%,
+        color-mix(in oklab, var(--color-accent) 34%, transparent),
+        transparent 72%
+      );
+  }
+
+  /* Film grain. Gives the panel a material surface rather than a printed one,
+     and it is what keeps the large flat area from looking like an empty div.
+     Inline SVG, so it costs no request and no JavaScript. */
+  .method::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.32;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .method::after {
+      display: none;
+    }
   }
 
   .method-step {

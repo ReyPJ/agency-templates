@@ -29,7 +29,7 @@ const data: Clinic = {
     background: "#FCFCFB",
     surface: "#F1F4F3",
     ink: "#14181A",
-    inkSoft: "#5A6461",
+    inkSoft: "#4B5451",
     line: "#E3E7E6",
     accent: "#1F6B66",
     accentInk: "#FCFCFB",
