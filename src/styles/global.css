@@ -1,4 +1,10 @@
-@import "tailwindcss";
+/* source(none) turns off automatic detection, which was also sweeping the
+   markdown in docs/ and emitting utilities for class names that only ever
+   appeared in code examples there. Only real source decides what CSS exists. */
+@import "tailwindcss" source(none);
+@source "../components";
+@source "../layouts";
+@source "../pages";
 
 /* Self-hosted: no request to a third party, and the display face is the LCP
    element, so it cannot wait on someone else's DNS. */

@@ -14,20 +14,39 @@ const { brand, contact } = clinic;
 {/*
   No navigation menu and no hamburger: five sections make scrolling enough,
   and a mobile menu would cost JavaScript this project does not spend.
-  The wordmark is set in type — the client's logo is a low-resolution JPEG
-  and putting it here would drag the whole page down with it.
-*/}
-<header>
-  <nav aria-label="Principal">
-    <a href="/" aria-label={`${brand.name} — inicio`}>{brand.name}</a>
+  Not sticky either — a bar following you down the page is chrome, and the
+  WhatsApp button already stays within reach on mobile.
 
-    <ul>
-      <li>
-        <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+  The wordmark is set in type. The client's logo is a low-resolution JPEG and
+  putting it up here would drag the whole page down with it.
+*/}
+<header class="absolute inset-x-0 top-0 z-10">
+  <nav aria-label="Principal" class="shell flex items-center justify-between py-6 md:py-8">
+    <a
+      href="/"
+      aria-label={`${brand.name} — inicio`}
+      class="font-medium tracking-tight text-ink"
+    >
+      {brand.name}
+    </a>
+
+    <ul class="flex items-center gap-6 md:gap-8">
+      <li class="hidden sm:block">
+        <a
+          href={`tel:${contact.phone}`}
+          class="text-small text-ink-soft transition-colors hover:text-ink"
+        >
+          {contact.phoneDisplay}
+        </a>
       </li>
       <li>
-        <a href={whatsappUrl(clinic)} target="_blank" rel="noopener">
-          <WhatsAppIcon />
+        <a
+          href={whatsappUrl(clinic)}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex min-h-11 items-center gap-2 text-small font-medium text-ink transition-colors hover:text-accent"
+        >
+          <WhatsAppIcon class="size-[18px]" />
           <span>WhatsApp</span>
         </a>
       </li>
