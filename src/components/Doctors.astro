@@ -1,0 +1,49 @@
+---
+import type { Doctor } from "../data/types.ts";
+
+interface Props {
+  doctors: Doctor[];
+  title: string;
+}
+
+const { doctors, title } = Astro.props;
+---
+
+{/*
+  Built for any number of doctors, not for two. Every field except name, role,
+  duties and quote is optional, and a missing one renders nothing at all —
+  no grey placeholder, no empty slot.
+*/}
+<section>
+  <h2>{title}</h2>
+
+  <ul>
+    {doctors.map((doctor) => (
+      <li>
+        {doctor.photo && (
+          <img
+            src={doctor.photo.src}
+            alt={doctor.photo.alt}
+            width={doctor.photo.width}
+            height={doctor.photo.height}
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+
+        <h3>{doctor.name}</h3>
+        <p>{doctor.role}</p>
+        <p>{doctor.duties}</p>
+
+        {/* The quote is the loudest thing on the card in phase two: it is the
+            only place the doctors speak in their own voice. */}
+        <blockquote>
+          <p>{doctor.quote}</p>
+        </blockquote>
+
+        {doctor.personalNote && <p>{doctor.personalNote}</p>}
+        {doctor.license && <p>Cédula profesional {doctor.license}</p>}
+      </li>
+    ))}
+  </ul>
+</section>

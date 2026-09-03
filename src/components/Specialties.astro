@@ -1,0 +1,28 @@
+---
+import type { Specialty } from "../data/types.ts";
+
+interface Props {
+  specialties: Specialty[];
+  title: string;
+}
+
+const { specialties, title } = Astro.props;
+---
+
+{/*
+  A description list, not a grid of cards: name and what it solves are a term
+  and its definition, and three identical cards side by side is the single
+  most recognisable tell of a template. Holds up from four entries to nine.
+*/}
+<section>
+  <h2>{title}</h2>
+
+  <dl>
+    {specialties.map((specialty) => (
+      <div>
+        <dt>{specialty.name}</dt>
+        <dd>{specialty.solves}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
