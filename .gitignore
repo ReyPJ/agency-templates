@@ -1,32 +1,25 @@
-# build output
+# build
 dist/
-
-# generated types
 .astro/
-
-# dependencies
 node_modules/
 
 # logs
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 
-# environment variables
+# entorno
 .env
 .env.production
 
-# macOS-specific files
+# sistema y editores
 .DS_Store
-
-# jetbrains setting folder
 .idea/
 
-doc.txt
+# instrucciones para agentes, personales de cada quien
 AGENTS.md
 CLAUDE.md
-BRIERF-axx-dental.md
 
 # workspace de ejecución de planes (scratch, no es del producto)
 .superpowers/
