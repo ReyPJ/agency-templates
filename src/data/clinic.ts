@@ -85,7 +85,7 @@ const data: Clinic = {
       quote:
         "Me apasiona devolver la salud, función y estética a nuestros pacientes con atención personalizada. Disfruto explicar de forma clara y gráfica cada tratamiento, y que cada paciente se sienta seguro, informado y acompañado durante su proceso.",
       personalNote:
-        "Colecciona piedras de distintas partes del mundo. Le gustan la jardinería y el sushi.",
+        "Colecciono piedras de distintas partes del mundo, y me gustan mucho la jardinería y el sushi.",
       photo: {
         src: "/doctores/alexander.jpg",
         alt: "Retrato del Dr. Alexander Patiño",
@@ -99,7 +99,7 @@ const data: Clinic = {
       duties: "Primer contacto con el paciente, análisis y diagnóstico.",
       quote:
         "Me apasiona guiar a nuestros pacientes hacia una odontología preventiva y conservadora, brindando herramientas y hábitos sostenibles para una salud bucal óptima a largo plazo.",
-      personalNote: "Baila salsa, come helado y escucha cantos de ballenas.",
+      personalNote: "Bailo salsa, como helado y escucho cantos de ballenas.",
       photo: {
         src: "/doctores/ximena.jpg",
         alt: "Retrato de la Dra. Ximena",
@@ -112,31 +112,38 @@ const data: Clinic = {
   specialties: [
     {
       name: "Ortodoncia",
-      solves: "Endereza tus dientes y corrige tu mordida con brackets, alineadores o aparatos.",
+      solves:
+        "Mueve los dientes y la mandíbula a su lugar, con brackets o con alineadores. No es solo cómo se ve: es cómo muerdes.",
     },
     {
       name: "Endodoncia",
-      solves: "Salva un diente infectado por dentro, en vez de sacarlo.",
+      solves:
+        "Cuando la infección llega al nervio, se limpia el diente por dentro. Es lo que evita tener que sacarlo.",
     },
     {
       name: "Periodoncia",
-      solves: "Trata tus encías cuando sangran, se inflaman o se están retirando.",
+      solves:
+        "Encías que sangran, se inflaman o se retiran, y el hueso que sostiene los dientes. Desde una gingivitis hasta una periodontitis avanzada.",
     },
     {
       name: "Odontopediatría",
-      solves: "Atiende a bebés, niños y adolescentes, y les enseña a cuidarse desde chicos.",
+      solves:
+        "Bebés, niños y adolescentes. Se previenen caries, se vigila cómo van saliendo los dientes y se arman hábitos que duran.",
     },
     {
       name: "Estética Dental",
-      solves: "Cambia el color y la forma de tus dientes: blanqueamiento, carillas y diseño de sonrisa.",
+      solves:
+        "Color, forma y proporción de la sonrisa: blanqueamiento, carillas, composite y diseño de sonrisa.",
     },
     {
       name: "Cirugía Oral",
-      solves: "Resuelve lo que necesita quirófano: muelas del juicio, frenillos, quistes e injertos.",
+      solves:
+        "Muelas del juicio, frenillos, quistes, injertos de hueso y todo lo que hay que hacer antes de un implante.",
     },
     {
       name: "Implantología",
-      solves: "Repone un diente que perdiste con un implante fijo que no se quita.",
+      solves:
+        "Un implante de titanio ocupa el lugar del diente que perdiste y se integra al hueso. Función y estética, de forma permanente.",
     },
   ],
 
@@ -153,9 +160,9 @@ const data: Clinic = {
   reviews: {
     title: "Lo que dicen los pacientes",
     themes: [
-      "Explican cada procedimiento hasta que se entiende, que es lo que tranquiliza a quien llega nervioso.",
-      "El trato es personal: la gente dice que se siente en casa.",
-      "La amabilidad es lo primero que mencionan.",
+      "Explican cada paso antes de darlo, y lo repiten las veces que haga falta. Es lo que más agradece quien llega con miedo.",
+      "Nadie se siente un número. El trato es de casa.",
+      "Lo primero que casi todos mencionan es la amabilidad.",
     ],
   },
 
