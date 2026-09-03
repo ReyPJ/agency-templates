@@ -145,6 +145,11 @@ const data: Clinic = {
     specialties: "Especialidades",
   },
 
+  closing: {
+    headline: "Los resultados se explican, no se imponen.",
+    cta: "Agendar mi valoración",
+  },
+
   reviews: {
     title: "Lo que dicen los pacientes",
     themes: [

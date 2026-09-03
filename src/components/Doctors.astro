@@ -10,16 +10,22 @@ const { doctors, title } = Astro.props;
 ---
 
 {/*
-  Built for any number of doctors, not for two. Every field except name, role,
-  duties and quote is optional, and a missing one renders nothing at all —
-  no grey placeholder, no empty slot.
-*/}
-<section>
-  <h2>{title}</h2>
+  Quote-led, not card-led. The quote is the substance — it is the only place
+  the doctors speak — so it runs at display scale and the name sits under it
+  as a signature, the way a pull quote is attributed in print.
 
-  <ul>
+  One wide row per doctor rather than mirrored columns. Two identical stacks
+  side by side read as a slide, and they also misalign the moment one quote
+  runs a line longer than the other.
+
+  Any number of doctors works: rows just repeat.
+*/}
+<section class="shell py-24 md:py-40">
+  <h2 class="font-display text-heading measure">{title}</h2>
+
+  <ul class="mt-16 grid gap-20 md:mt-24 md:gap-32">
     {doctors.map((doctor) => (
-      <li>
+      <li class="grid gap-8 md:grid-cols-12 md:gap-10 lg:gap-16">
         {doctor.photo && (
           <img
             src={doctor.photo.src}
@@ -28,21 +34,32 @@ const { doctors, title } = Astro.props;
             height={doctor.photo.height}
             loading="lazy"
             decoding="async"
+            class="aspect-4/5 w-full max-w-[280px] object-cover md:col-span-4 md:max-w-none"
           />
         )}
 
-        <h3>{doctor.name}</h3>
-        <p>{doctor.role}</p>
-        <p>{doctor.duties}</p>
+        <div class="md:col-span-8">
+          <blockquote>
+            <p class="font-display text-step italic">{doctor.quote}</p>
+          </blockquote>
 
-        {/* The quote is the loudest thing on the card in phase two: it is the
-            only place the doctors speak in their own voice. */}
-        <blockquote>
-          <p>{doctor.quote}</p>
-        </blockquote>
+          <div class="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h3 class="font-medium">{doctor.name}</h3>
+            <p class="text-small text-ink-soft">{doctor.role}</p>
+          </div>
 
-        {doctor.personalNote && <p>{doctor.personalNote}</p>}
-        {doctor.license && <p>Cédula profesional {doctor.license}</p>}
+          <p class="measure mt-6 text-small text-ink-soft">{doctor.duties}</p>
+
+          {doctor.personalNote && (
+            <p class="measure mt-2 text-small text-ink-soft">{doctor.personalNote}</p>
+          )}
+
+          {doctor.license && (
+            <p class="mt-2 text-small text-ink-soft">
+              Cédula profesional <span class="tabular-nums">{doctor.license}</span>
+            </p>
+          )}
+        </div>
       </li>
     ))}
   </ul>

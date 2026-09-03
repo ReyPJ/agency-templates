@@ -41,14 +41,17 @@ const ctaUrl = whatsappUrl(clinic);
       <Reviews reviews={clinic.reviews} rating={clinic.rating} />
     )}
 
-    {clinic.location && (
-      <Location
-        location={clinic.location}
-        contact={clinic.contact}
-        brand={clinic.brand}
-      />
-    )}
   </main>
+
+  {/* Always rendered: it carries the page's closing call to action, so it is
+      not conditional on the client having filled in an address. */}
+  <Location
+    location={clinic.location}
+    contact={clinic.contact}
+    brand={clinic.brand}
+    closing={clinic.closing}
+    ctaUrl={ctaUrl}
+  />
 
   <WhatsAppButton clinic={clinic} />
 </Base>

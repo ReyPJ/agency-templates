@@ -10,24 +10,56 @@ const { method } = Astro.props;
 
 {/*
   The one thing no competitor in the area has written down, so it runs second,
-  before the specialties, and phase two gives it the only inverted background
-  on the page.
+  before the specialties, and it gets the only inverted block on the page.
 
-  An ordered list, not a styled div: these are three real steps in sequence,
-  which is what makes numbering them honest. The visible numerals come from a
-  CSS counter, so the markup carries order and the stylesheet carries looks.
+  The inversion is not contrast for its own sake: diagnosis here means looking
+  at backlit images — 3D scans, radiographs — so the section is the viewing
+  box, and the clinic's own mint is the light behind it.
+
+  An ordered list, not a styled div: three real steps in sequence, which is
+  what makes numbering them honest. The numerals come from a CSS counter, so
+  the markup carries the order and the stylesheet carries the look.
 */}
-<section>
-  <h2>{method.title}</h2>
+<section class="method bg-inverted-background text-inverted-ink">
+  <div class="shell py-24 md:py-32">
+    <h2 class="font-display text-heading measure">{method.title}</h2>
 
-  {method.intro && <p>{method.intro}</p>}
+    {method.intro && (
+      <p class="measure mt-6 text-lead text-inverted-ink-soft">{method.intro}</p>
+    )}
 
-  <ol>
-    {method.steps.map((step) => (
-      <li>
-        <h3>{step.label}</h3>
-        <p>{step.text}</p>
-      </li>
-    ))}
-  </ol>
+    <ol class="mt-16 grid gap-14 md:mt-20 md:grid-cols-3 md:gap-10 lg:gap-14">
+      {method.steps.map((step) => (
+        <li class="method-step">
+          <h3 class="font-display text-heading">{step.label}</h3>
+          <p class="mt-5 text-lead text-inverted-ink-soft">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
 </section>
+
+<style>
+  .method {
+    counter-reset: step;
+  }
+
+  .method-step {
+    counter-increment: step;
+  }
+
+  /* Large enough to be an element rather than a typo. In a block this size a
+     24px numeral reads as an accident; at display scale it becomes the thing
+     that gives the section its structure, and the clinic's own mint is what
+     makes it the brightest note on the page. */
+  .method-step::before {
+    content: counter(step);
+    display: block;
+    margin-block-end: 12px;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 1.4rem + 5vw, 6rem);
+    line-height: 0.85;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-accent-light);
+  }
+</style>

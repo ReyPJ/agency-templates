@@ -23,6 +23,7 @@ function base(): Clinic {
     doctors: [{ name: "Dra. N", role: "r", duties: "f", quote: "c" }],
     specialties: [{ name: "Ortodoncia", solves: "r" }],
     titles: { doctors: "Doctores", specialties: "Especialidades" },
+    closing: { headline: "Una frase de cierre.", cta: "Agendar" },
   };
 }
 
@@ -85,6 +86,16 @@ test("rejects a hero with no headline lines", () => {
 test("rejects zero doctors", () => {
   const c = base(); c.doctors = [];
   assert.throws(() => validateClinic(c), /doctors/);
+});
+
+test("rejects an empty closing headline", () => {
+  const c = base(); c.closing.headline = "";
+  assert.throws(() => validateClinic(c), /clinic\.closing\.headline/);
+});
+
+test("rejects an empty closing cta", () => {
+  const c = base(); c.closing.cta = "";
+  assert.throws(() => validateClinic(c), /clinic\.closing\.cta/);
 });
 
 test("rejects zero specialties", () => {

@@ -55,7 +55,7 @@
 
   /* A wide gap between display and body is what reads as editorial. Sizes in
      between would flatten the page into a brochure. */
-  --text-display: clamp(2.75rem, 1.1rem + 6.6vw, 5.5rem);
+  --text-display: clamp(3rem, 0.4rem + 10.4vw, 9.5rem);
   --text-display--line-height: 0.94;
   --text-display--letter-spacing: -0.022em;
 

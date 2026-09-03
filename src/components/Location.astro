@@ -1,66 +1,152 @@
 ---
-import type { Brand, Contact, Location } from "../data/types.ts";
+import type { Brand, Closing, Contact, Location } from "../data/types.ts";
+import WhatsAppIcon from "./icons/WhatsAppIcon.astro";
 
 interface Props {
-  location: Location;
+  location?: Location;
   contact: Contact;
   brand: Brand;
+  closing: Closing;
+  ctaUrl: string;
 }
 
-const { location, contact, brand } = Astro.props;
+const { location, contact, brand, closing, ctaUrl } = Astro.props;
+
+const year = new Date().getFullYear();
+const hasPracticalInfo = Boolean(
+  location?.address?.length ||
+    location?.hours?.length ||
+    location?.paymentMethods?.length ||
+    location?.mapUrl ||
+    location?.installments,
+);
 ---
 
 {/*
   Closes the page, so it doubles as the footer — the architecture is eight
   components and none of them is one.
 
+  The accent band exists because the last thing a visitor reads has to be an
+  invitation, not a trailing address. It is also the only full-bleed use of
+  the brand colour on the page, which is what gives the page an ending.
+
+  The practical block only renders when there is practical information. A
+  client with nothing but a city gets a tight close instead of a screen of
+  empty space with a heading stranded in it.
+
   No embedded map. A Google Maps iframe sets third-party cookies this project
-  forbids, weighs hundreds of kilobytes and wrecks the LCP, all to show what a
-  link to the real listing shows better.
+  forbids, weighs hundreds of kilobytes and wrecks the LCP, all to show worse
+  what a link to the real listing shows better.
 */}
-<section>
-  <h2>{location.title}</h2>
+<section class="bg-accent text-accent-ink">
+  <div class="shell flex flex-col gap-10 py-20 md:flex-row md:items-end md:justify-between md:gap-16 md:py-28">
+    <h2 class="max-w-[15ch] font-display text-heading text-balance">
+      {closing.headline}
+    </h2>
 
-  <address>
-    {location.address?.map((line) => <span>{line}</span>)}
-    <span>{location.area}</span>
-    <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
-  </address>
+    <div class="flex flex-col items-start gap-5 md:items-end">
+      <a
+        href={ctaUrl}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-accent-ink px-8 py-4 font-medium text-accent transition-opacity hover:opacity-90 sm:w-auto"
+      >
+        <WhatsAppIcon class="size-[18px]" />
+        <span>{closing.cta}</span>
+      </a>
 
-  {location.mapUrl && (
-    <p>
-      <a href={location.mapUrl} target="_blank" rel="noopener">Cómo llegar</a>
-    </p>
-  )}
-
-  {location.hours && location.hours.length > 0 && (
-    <dl>
-      {location.hours.map((slot) => (
-        <div>
-          <dt>{slot.days}</dt>
-          <dd>{slot.time}</dd>
-        </div>
-      ))}
-    </dl>
-  )}
-
-  {location.paymentMethods && location.paymentMethods.length > 0 && (
-    <ul>
-      {location.paymentMethods.map((method) => <li>{method}</li>)}
-    </ul>
-  )}
-
-  {location.installments && <p>Aceptamos meses sin intereses.</p>}
-
-  {/* The only place the client's own logo appears. */}
-  {brand.logo && (
-    <img
-      src={brand.logo.src}
-      alt={brand.logo.alt}
-      width={brand.logo.width}
-      height={brand.logo.height}
-      loading="lazy"
-      decoding="async"
-    />
-  )}
+      <a
+        href={`tel:${contact.phone}`}
+        class="tabular-nums opacity-80 transition-opacity hover:opacity-100"
+      >
+        {contact.phoneDisplay}
+      </a>
+    </div>
+  </div>
 </section>
+
+<footer class="bg-surface">
+  <div class="shell py-16 pb-32 md:py-20 md:pb-20">
+    {location && hasPracticalInfo && (
+      <div class="grid gap-10 md:grid-cols-3 md:gap-12">
+        <div>
+          <h3 class="font-display text-step">{location.title}</h3>
+          <address class="mt-4 grid gap-1 not-italic text-ink-soft">
+            {location.address?.map((line) => <span>{line}</span>)}
+            <span>{location.area}</span>
+          </address>
+          {location.mapUrl && (
+            <p class="mt-4">
+              <a
+                href={location.mapUrl}
+                target="_blank"
+                rel="noopener"
+                class="text-accent underline underline-offset-4 hover:no-underline"
+              >
+                Cómo llegar
+              </a>
+            </p>
+          )}
+        </div>
+
+        {location.hours && location.hours.length > 0 && (
+          <dl class="grid content-start gap-2">
+            {location.hours.map((slot) => (
+              <div class="flex justify-between gap-8 text-ink-soft">
+                <dt>{slot.days}</dt>
+                <dd class="tabular-nums">{slot.time}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        {(location.paymentMethods?.length || location.installments) && (
+          <div class="text-ink-soft">
+            {location.paymentMethods && location.paymentMethods.length > 0 && (
+              <ul class="grid gap-2">
+                {location.paymentMethods.map((method) => <li>{method}</li>)}
+              </ul>
+            )}
+            {location.installments && (
+              <p class="mt-2">Aceptamos meses sin intereses.</p>
+            )}
+          </div>
+        )}
+      </div>
+    )}
+
+    {/* The rule here is structural, not decorative: it marks where the page's
+        content ends and its colophon begins. */}
+    <div
+      class:list={[
+        "flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between",
+        hasPracticalInfo && "mt-16 border-t border-line pt-10 md:mt-20",
+      ]}
+    >
+      <div class="flex items-center gap-4">
+        {brand.logo && (
+          <img
+            src={brand.logo.src}
+            alt=""
+            width={brand.logo.width}
+            height={brand.logo.height}
+            loading="lazy"
+            decoding="async"
+            class="size-11 shrink-0 rounded-full object-cover"
+          />
+        )}
+        <div>
+          <p class="font-medium">{brand.name}</p>
+          {!hasPracticalInfo && location && (
+            <p class="text-small text-ink-soft">{location.area}</p>
+          )}
+          {brand.tagline && (
+            <p class="text-small text-ink-soft">{brand.tagline}</p>
+          )}
+        </div>
+      </div>
+
+      <p class="text-small text-ink-soft tabular-nums">© {year} {brand.name}</p>
+    </div>
+  </div>
+</footer>

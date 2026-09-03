@@ -12,37 +12,52 @@ const { reviews, rating } = Astro.props;
 {/*
   No carousel. A carousel is JavaScript, and this page spends none — the
   quotes simply stack. Reads as finished with or without verbatim reviews,
-  which matters because most clients hand those over late or never.
+  which matters because clients hand those over late or never.
+
+  The score is set at display size because it is the strongest evidence on
+  the page and it belongs to the patients, not to the clinic's own copy.
 */}
-<section>
-  <h2>{reviews.title}</h2>
+<section class="shell py-24 md:py-40">
+  <div class="grid gap-16 lg:grid-cols-12 lg:gap-12">
+    <div class="lg:col-span-5">
+      <h2 class="font-display text-heading">{reviews.title}</h2>
 
-  {rating && (
-    <p>
-      <strong>{rating.score}</strong>
-      <span>de 5 en {rating.count} reseñas de {rating.source}</span>
-      {rating.updatedAgo && <span>la más reciente {rating.updatedAgo}</span>}
-    </p>
-  )}
+      {rating && (
+        <p class="mt-10">
+          <span class="block font-display text-display tabular-nums leading-none">
+            {rating.score}
+          </span>
+          <span class="mt-4 block text-small text-ink-soft">
+            de 5 en <span class="tabular-nums">{rating.count}</span> reseñas de
+            {" "}{rating.source}{rating.updatedAgo && `, la más reciente ${rating.updatedAgo}`}.
+          </span>
+        </p>
+      )}
+    </div>
 
-  {/* What patients keep saying, not a claim the clinic makes about itself. */}
-  <ul>
-    {reviews.themes.map((theme) => <li>{theme}</li>)}
-  </ul>
+    {/* What patients keep repeating, not a claim the clinic makes about itself. */}
+    <div class="lg:col-span-6 lg:col-start-7">
+      <ul class="grid gap-8">
+        {reviews.themes.map((theme) => (
+          <li class="text-lead">{theme}</li>
+        ))}
+      </ul>
 
-  {reviews.quotes && reviews.quotes.length > 0 && (
-    <ul>
-      {reviews.quotes.map((quote) => (
-        <li>
-          <blockquote>
-            <p>{quote.text}</p>
-          </blockquote>
-          <p>
-            <cite>{quote.author}</cite>
-            {quote.date && <span>{quote.date}</span>}
-          </p>
-        </li>
-      ))}
-    </ul>
-  )}
+      {reviews.quotes && reviews.quotes.length > 0 && (
+        <ul class="mt-16 grid gap-12">
+          {reviews.quotes.map((quote) => (
+            <li>
+              <blockquote>
+                <p class="font-display text-quote italic">{quote.text}</p>
+              </blockquote>
+              <p class="mt-4 text-small text-ink-soft">
+                <cite class="not-italic">{quote.author}</cite>
+                {quote.date && <span>, {quote.date}</span>}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
 </section>

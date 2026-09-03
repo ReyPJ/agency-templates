@@ -20,22 +20,25 @@ const { hero, brand, rating, ctaUrl } = Astro.props;
   proof belongs where the decision gets made, not floating over a title.
 */}
 <section class="shell flex min-h-[86svh] flex-col justify-end pt-32 pb-16 md:min-h-[92svh] md:pt-40 md:pb-24">
-  <div class="max-w-[19ch] sm:max-w-none">
-    {/* One span per line: the reveal animates them in sequence, and the
-        ragged right edge is the shape the sentence actually makes. */}
-    <h1 class="font-display text-display text-balance">
-      {hero.headline.map((line) => <span class="hero-line block">{line}</span>)}
-    </h1>
-  </div>
+  {/* One span per line: the reveal animates them in sequence, and the ragged
+      right edge is the shape the sentence actually makes. Set large enough to
+      fill the frame — at a modest size it stops being a graphic element and
+      the page turns into text floating on white. */}
+  <h1 class="font-display text-display">
+    {hero.headline.map((line) => <span class="hero-line block">{line}</span>)}
+  </h1>
 
   <p class="measure mt-8 text-lead text-ink-soft md:mt-10">{hero.subhead}</p>
 
+  {/* The hero's bottom edge is composed as one full-width line rather than
+      left as loose pieces: action and proof anchor the left, the clinic's
+      own words close the right. */}
   <div class="mt-12 flex flex-col items-start gap-8 md:mt-16 md:flex-row md:items-center md:gap-12">
     <a
       href={ctaUrl}
       target="_blank"
       rel="noopener"
-      class="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-accent px-8 py-4 font-medium text-accent-ink transition-opacity hover:opacity-90 sm:w-auto"
+      class="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-accent px-8 py-4 font-medium text-accent-ink transition-opacity hover:opacity-90 md:w-auto"
     >
       {hero.cta}
     </a>
@@ -62,12 +65,12 @@ const { hero, brand, rating, ctaUrl } = Astro.props;
         </span>
       </p>
     )}
-  </div>
 
-  {/* The clinic signing its name before it shows its work. */}
-  {brand.tagline && (
-    <p class="mt-24 text-small text-ink-soft md:mt-32">{brand.tagline}</p>
-  )}
+    {/* The clinic signing its name before it shows its work. */}
+    {brand.tagline && (
+      <p class="text-small text-ink-soft md:ml-auto">{brand.tagline}</p>
+    )}
+  </div>
 </section>
 
 <style>

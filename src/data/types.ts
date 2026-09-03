@@ -96,6 +96,13 @@ export interface Hours {
   time: string;
 }
 
+/** The last thing a visitor reads before leaving, so it carries the final
+ *  call to action rather than trailing off into contact details. */
+export interface Closing {
+  headline: string;
+  cta: string;
+}
+
 export interface Location {
   title: string;
   area: string;
@@ -122,6 +129,7 @@ export interface Clinic {
   // they would end up hardcoded in index.astro — client copy outside
   // clinic.ts, which is exactly what breaks reuse.
   titles: { doctors: string; specialties: string };
+  closing: Closing;
 
   rating?: Rating;
   method?: Method;

@@ -12,12 +12,24 @@ const { clinic } = Astro.props;
 
 {/*
   The primary call to action on mobile, where people actually look for a
-  dentist. Styling pins it to the bottom of the viewport in phase two;
-  here it is just a link, so it works with CSS disabled.
+  dentist. Hidden from md up, where the nav already carries it.
+
+  Bottom padding uses the safe-area inset so the bar clears the home
+  indicator on phones with a gesture bar.
 */}
-<div>
-  <a href={whatsappUrl(clinic)} target="_blank" rel="noopener">
-    <WhatsAppIcon />
-    <span>{clinic.hero.cta}</span>
-  </a>
+<div
+  class="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-background/95 backdrop-blur-sm md:hidden"
+  style="padding-bottom: env(safe-area-inset-bottom)"
+>
+  <div class="shell py-3">
+    <a
+      href={whatsappUrl(clinic)}
+      target="_blank"
+      rel="noopener"
+      class="flex min-h-11 items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 font-medium text-accent-ink"
+    >
+      <WhatsAppIcon class="size-[18px]" />
+      <span>{clinic.hero.cta}</span>
+    </a>
+  </div>
 </div>

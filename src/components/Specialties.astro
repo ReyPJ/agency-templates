@@ -11,18 +11,23 @@ const { specialties, title } = Astro.props;
 
 {/*
   A description list, not a grid of cards: name and what it solves are a term
-  and its definition, and three identical cards side by side is the single
-  most recognisable tell of a template. Holds up from four entries to nine.
-*/}
-<section>
-  <h2>{title}</h2>
+  and its definition, and identical cards side by side is the single most
+  recognisable tell of a template. Holds from four entries to nine.
 
-  <dl>
-    {specialties.map((specialty) => (
-      <div>
-        <dt>{specialty.name}</dt>
-        <dd>{specialty.solves}</dd>
-      </div>
-    ))}
-  </dl>
+  The serif name anchors each entry, so no rules are needed to keep them
+  apart — space does it.
+*/}
+<section class="bg-surface">
+  <div class="shell py-24 md:py-40">
+    <h2 class="font-display text-heading measure">{title}</h2>
+
+    <dl class="mt-16 grid gap-12 md:mt-24 md:grid-cols-2 md:gap-x-16 md:gap-y-14 lg:gap-x-24">
+      {specialties.map((specialty) => (
+        <div>
+          <dt class="font-display text-step">{specialty.name}</dt>
+          <dd class="measure mt-3 text-ink-soft">{specialty.solves}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
 </section>
