@@ -8,8 +8,14 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
+{/* width/height give the icon an intrinsic size. Without them an SVG with a
+    viewBox stretches to whatever width it is given, so the page is broken
+    rather than merely unstyled before any CSS loads. Utility classes
+    override these later. */}
 <svg
   class={className}
+  width="24"
+  height="24"
   viewBox="0 0 24 24"
   fill="currentColor"
   aria-hidden="true"
