@@ -1,0 +1,66 @@
+---
+import type { Brand, Contact, Location } from "../data/types.ts";
+
+interface Props {
+  location: Location;
+  contact: Contact;
+  brand: Brand;
+}
+
+const { location, contact, brand } = Astro.props;
+---
+
+{/*
+  Closes the page, so it doubles as the footer — the architecture is eight
+  components and none of them is one.
+
+  No embedded map. A Google Maps iframe sets third-party cookies this project
+  forbids, weighs hundreds of kilobytes and wrecks the LCP, all to show what a
+  link to the real listing shows better.
+*/}
+<section>
+  <h2>{location.title}</h2>
+
+  <address>
+    {location.address?.map((line) => <span>{line}</span>)}
+    <span>{location.area}</span>
+    <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+  </address>
+
+  {location.mapUrl && (
+    <p>
+      <a href={location.mapUrl} target="_blank" rel="noopener">Cómo llegar</a>
+    </p>
+  )}
+
+  {location.hours && location.hours.length > 0 && (
+    <dl>
+      {location.hours.map((slot) => (
+        <div>
+          <dt>{slot.days}</dt>
+          <dd>{slot.time}</dd>
+        </div>
+      ))}
+    </dl>
+  )}
+
+  {location.paymentMethods && location.paymentMethods.length > 0 && (
+    <ul>
+      {location.paymentMethods.map((method) => <li>{method}</li>)}
+    </ul>
+  )}
+
+  {location.installments && <p>Aceptamos meses sin intereses.</p>}
+
+  {/* The only place the client's own logo appears. */}
+  {brand.logo && (
+    <img
+      src={brand.logo.src}
+      alt={brand.logo.alt}
+      width={brand.logo.width}
+      height={brand.logo.height}
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+</section>

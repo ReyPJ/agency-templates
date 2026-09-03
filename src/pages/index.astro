@@ -5,15 +5,21 @@ import Hero from "../components/Hero.astro";
 import Method from "../components/Method.astro";
 import Doctors from "../components/Doctors.astro";
 import Specialties from "../components/Specialties.astro";
+import Reviews from "../components/Reviews.astro";
+import Location from "../components/Location.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import { clinic } from "../data/clinic.ts";
 import { whatsappUrl } from "../data/validate.ts";
 
+// Optional sections are driven by the presence of their data. There is no
+// branch anywhere on a client's name or slug: dropping a field from
+// clinic.ts is what removes a section.
 const ctaUrl = whatsappUrl(clinic);
 ---
 
 <Base clinic={clinic}>
   <Nav clinic={clinic} />
+
   <main>
     <Hero
       hero={clinic.hero}
@@ -21,12 +27,28 @@ const ctaUrl = whatsappUrl(clinic);
       rating={clinic.rating}
       ctaUrl={ctaUrl}
     />
+
     {clinic.method && <Method method={clinic.method} />}
+
     <Doctors doctors={clinic.doctors} title={clinic.titles.doctors} />
+
     <Specialties
       specialties={clinic.specialties}
       title={clinic.titles.specialties}
     />
+
+    {clinic.reviews && (
+      <Reviews reviews={clinic.reviews} rating={clinic.rating} />
+    )}
+
+    {clinic.location && (
+      <Location
+        location={clinic.location}
+        contact={clinic.contact}
+        brand={clinic.brand}
+      />
+    )}
   </main>
+
   <WhatsAppButton clinic={clinic} />
 </Base>
