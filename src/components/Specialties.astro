@@ -9,33 +9,42 @@ const { specialties } = Astro.props;
 ---
 
 {/*
+  The section's own scale contrast: the clinic's claim runs at display size,
+  the index beneath it runs tight. Without that jump every row weighed the same
+  as the heading and the whole thing read as a table.
+
+  The claim earns the size — it is the reason a list of seven matters at all,
+  and it is the clinic's own line rather than ours.
+
   This content is an index — a term and what it means for the patient — so it
   is set as one. Identical cards side by side is the most recognisable tell of
-  a template, and a grid also wastes the right third of the page on short lines.
+  a template, and a grid also wastes the right of the page on short lines.
 
-  The rules run edge to edge while the text stays on the page's column. That
-  break is deliberate: it is the one place the layout escapes the container,
-  and it is what stops every section from sitting inside the same box.
+  The rules run edge to edge while the text stays on the page's column: the one
+  place the layout escapes its container.
 
-  Deliberately the densest section on the page. Everything around it breathes;
-  without one tight block the whole page reads as evenly sparse, which is what
+  Deliberately the densest block on the page. Everything around it breathes;
+  without one tight section the page reads as evenly sparse, which is what
   makes an airy layout look unfinished rather than composed.
-
-  Rows repeat, so four specialties look as considered as nine.
 */}
-<section class="bg-surface py-16 md:py-20">
+<section class="bg-surface py-16 md:py-24">
   <div class="shell">
-    <h2 class="font-display text-heading">{specialties.title}</h2>
+    <h2 class="text-small text-ink-soft">{specialties.title}</h2>
+
     {specialties.intro && (
-      <p class="measure mt-4 text-lead text-ink-soft">{specialties.intro}</p>
+      <p class="mt-5 max-w-[20ch] font-display text-heading text-balance md:mt-6">
+        {specialties.intro}
+      </p>
     )}
   </div>
 
-  <dl class="mt-10 md:mt-12">
+  <dl class="mt-12 md:mt-16">
     {specialties.items.map((specialty) => (
       <div class="border-t border-line">
         <div class="shell grid gap-1 py-4 md:grid-cols-12 md:items-baseline md:gap-8 md:py-5">
-          <dt class="font-display text-step md:col-span-4">{specialty.name}</dt>
+          <dt class="font-display text-step text-accent md:col-span-4">
+            {specialty.name}
+          </dt>
           <dd class="text-ink-soft md:col-span-8">{specialty.solves}</dd>
         </div>
       </div>
