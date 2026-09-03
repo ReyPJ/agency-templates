@@ -10,22 +10,27 @@ const { specialties, title } = Astro.props;
 ---
 
 {/*
-  A description list, not a grid of cards: name and what it solves are a term
-  and its definition, and identical cards side by side is the single most
-  recognisable tell of a template. Holds from four entries to nine.
+  This content is an index — a term and what it means for the patient — so it
+  is set as one, in full-width rows rather than a grid of cards. Identical
+  cards side by side is the single most recognisable tell of a template, and
+  a grid also wastes the right third of the page on seven short lines.
 
-  The serif name anchors each entry, so no rules are needed to keep them
-  apart — space does it.
+  The rules between rows are structural, not decoration: entries here vary in
+  height, and the line is what says where one ends and the next begins.
+
+  Rows repeat, so four specialties look as deliberate as nine.
 */}
 <section class="bg-surface">
-  <div class="shell py-24 md:py-40">
-    <h2 class="font-display text-heading measure">{title}</h2>
+  <div class="shell py-24 md:py-32">
+    <h2 class="font-display text-heading">{title}</h2>
 
-    <dl class="mt-16 grid gap-12 md:mt-24 md:grid-cols-2 md:gap-x-16 md:gap-y-14 lg:gap-x-24">
+    <dl class="mt-12 md:mt-16">
       {specialties.map((specialty) => (
-        <div>
-          <dt class="font-display text-step">{specialty.name}</dt>
-          <dd class="measure mt-3 text-ink-soft">{specialty.solves}</dd>
+        <div class="grid gap-2 border-t border-line py-6 md:grid-cols-12 md:gap-8 md:py-7">
+          <dt class="font-display text-step md:col-span-4">{specialty.name}</dt>
+          <dd class="text-ink-soft md:col-span-7 md:col-start-6 md:self-center">
+            {specialty.solves}
+          </dd>
         </div>
       ))}
     </dl>
