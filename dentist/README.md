@@ -60,13 +60,35 @@ Van en `src/assets/`, **no en `public/`**. Solo desde ahí Astro genera WebP y
 | | |
 |---|---|
 | `pnpm dev` | servidor de desarrollo |
-| `pnpm build` | verifica tipos y construye a `dist/` |
+| `pnpm build` | verifica tipos, construye a `dist/` y revisa que el build no salga roto |
 | `pnpm preview` | sirve el build — **medí Lighthouse aquí, nunca en `dev`** |
 | `pnpm test` | suite de tests |
 | `pnpm check` | solo verificación de tipos |
 
 Medir rendimiento contra el servidor de desarrollo da números sin sentido: no
 minifica, sirve sin optimizar y abre un websocket de recarga en caliente.
+
+## Despliegue
+
+El sitio es **estático**: `pnpm build` deja en `dist/` todo lo que el navegador
+va a pedir, incluidos los WebP ya generados. No hay servidor, así que no debe
+haber adaptador de Astro.
+
+Eso importa porque un adaptador cambia el manejo de imágenes: en vez de
+optimizarlas durante el build, deja el HTML apuntando a `/_image?href=...`, una
+ruta que solo responde si hay un servidor detrás. Publicado como archivos
+estáticos, **todas las imágenes dan 404** — el resto del sitio se ve bien, que
+es lo que hace difícil de notar el problema. Es exactamente lo que pasa cuando
+Cloudflare Workers adopta el proyecto con `@astrojs/cloudflare`: su ajuste por
+defecto (`imageService: 'cloudflare-binding'`) transforma en runtime.
+
+En Cloudflare, entonces: build `pnpm build`, directorio de salida `dist`, y sin
+adaptador instalado. Si por lo que sea hace falta uno, tiene que llevar
+`imageService: 'compile'` para que las imágenes se generen durante el build.
+
+`scripts/verify-dist.mjs` corre al final de `pnpm build` y hace fallar el build
+si el HTML quedó apuntando a `/_image` o a cualquier archivo que no exista en
+`dist/`. Vale más un deploy fallido que un sitio publicado sin imágenes.
 
 ## Cómo está construido
 

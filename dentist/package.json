@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/verify-dist.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "test": "node --import ./test/register.js --test \"test/**/*.test.ts\"",
@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.9"
+    "astro": "^7.2.9",
+    "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true
