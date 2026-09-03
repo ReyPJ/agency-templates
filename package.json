@@ -13,6 +13,7 @@
     "test": "node --test \"test/**/*.test.ts\""
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.9"
   },
   "allowScripts": {

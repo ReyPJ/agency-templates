@@ -1,5 +1,6 @@
 ---
 import type { Clinic } from "../data/types.ts";
+import "../styles/global.css";
 
 interface Props {
   clinic: Clinic;
@@ -60,6 +61,16 @@ if (location?.hours?.length) {
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
     <link rel="canonical" href={canonical} />
+
+    {/* Only the display face. It carries the LCP text; preloading all three
+        would make them compete for bandwidth and land the headline later. */}
+    <link
+      rel="preload"
+      href="/fonts/instrument-serif.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/favicon-180.png" />
