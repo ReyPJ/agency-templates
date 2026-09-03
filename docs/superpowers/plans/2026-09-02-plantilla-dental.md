@@ -37,7 +37,12 @@ Aplican a **todas** las tareas. Valores copiados del spec.
 - Sin `localStorage`, sin cookies, sin analytics de terceros, sin iframes.
 - **Ningún `if` con el nombre o slug de un cliente dentro de un componente.**
 - **Ningún dato hardcodeado en componentes.** Todo sale de `clinica.ts`.
-- Nombres de token semánticos: `bg-fondo`, `text-tinta`, `bg-acento`. Nunca
+- **Nomenclatura: el código en inglés, el contenido en español.** Archivos, tipos,
+  campos, funciones, tokens CSS y clases de Tailwind en inglés; todo string que el
+  visitante lea, en español. Los bloques de código de las tareas de abajo se
+  escribieron con los nombres viejos en español — **manda la tabla de §2.1 del spec**,
+  no el bloque. `borde` se traduce `line`, no `border`.
+- Nombres de token semánticos: `bg-background`, `text-ink`, `bg-accent`. Nunca
   `bg-teal-600` ni hex directos en componentes.
 - Escala de espaciado cerrada: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128. Nada intermedio.
 - Ancho de texto máximo 65ch. Aire de sección: 96px móvil, 160px desktop.

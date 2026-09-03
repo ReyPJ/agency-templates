@@ -38,115 +38,169 @@ la base no se propaga a los clientes ya generados. Aceptable a esta escala.
 Correcciones ortográficas aplicadas sobre `doc.txt`: `Priodoncia`→Periodoncia,
 `Estetica`→Estética, `DESPÚES`→DESPUÉS.
 
+## 2.1 Nomenclatura
+
+**El código va en inglés. El contenido va en español.**
+
+Archivos, tipos, campos, funciones, tokens CSS y clases de Tailwind: inglés.
+Todo string que el visitante llegue a leer: español. Un `Doctors.astro` que recibe
+`doctors: Doctor[]` y pinta `"Quién te va a atender"` es lo correcto.
+
+`borde` se traduce como `line`, no como `border`, porque `border-border` como clase
+de Tailwind es ilegible.
+
+| archivo | | identificador | |
+|---|---|---|---|
+| `types.ts` | ← tipos.ts | `Clinic` | ← Clinica |
+| `validate.ts` | ← validar.ts | `Theme` | ← Tema |
+| `clinic.ts` | ← clinica.ts | `Brand` | ← Marca |
+| `Method.astro` | ← Metodo.astro | `Contact` | ← Contacto |
+| `Doctors.astro` | ← Doctores.astro | `Rating` | ← Calificacion |
+| `Specialties.astro` | ← Especialidades.astro | `Method` / `MethodStep` | ← Metodo / PasoMetodo |
+| `Reviews.astro` | ← Resenas.astro | `Specialty` | ← Especialidad |
+| `Location.astro` | ← Ubicacion.astro | `Review` / `Reviews` | ← Resena / Resenas |
+| `WhatsAppButton.astro` | ← BotonWhatsApp.astro | `Hours` / `Location` / `Image` | ← Horario / Ubicacion / Imagen |
+| | | `validateClinic` / `whatsappUrl` / `InvalidClinic` | ← validarClinica / urlWhatsapp / ClinicaInvalida |
+
+Tokens: `--theme-*` es lo que inyecta el layout, `--color-*` lo que declara Tailwind.
+Clases resultantes: `bg-background`, `bg-surface`, `text-ink`, `text-ink-soft`,
+`border-line`, `bg-accent`, `text-accent-ink`, `bg-inverted-background`,
+`text-inverted-ink`, `text-inverted-ink-soft`, `text-accent-light`.
+
 ## 3. Arquitectura de datos
 
 `src/data/tipos.ts` es el contrato. Ningún componente conoce a AXX.
 
 ```ts
-export interface Tema {
-  fondo: string;            // base clara
-  superficie: string;       // bloques sutiles sobre el fondo
-  tinta: string;            // texto principal
-  tintaSuave: string;       // texto secundario
-  borde: string;
-  acento: string;
-  acentoTinta: string;      // texto sobre el acento
-  inversoFondo: string;     // el bloque oscuro
-  inversoTinta: string;
-  inversoTintaSuave: string;
-  acentoClaro: string;      // solo legible sobre inversoFondo
+export interface Theme {
+  background: string;
+  surface: string;
+  ink: string;
+  inkSoft: string;
+  line: string;
+  accent: string;
+  accentInk: string;
+  invertedBackground: string;
+  invertedInk: string;
+  invertedInkSoft: string;
+  /** Only legible against invertedBackground. */
+  accentLight: string;
 }
 
-export interface Marca {
-  nombre: string;           // "AXX Dental"
-  tipo: string;             // "Clínica dental de especialidades"
-  tagline?: string;         // "Salud. Función. Estética."
-  logo?: Imagen;            // favicon y cierre de Ubicación, nunca el nav
+export interface Image {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
 }
 
-export interface Contacto {
-  whatsapp: string;         // OBLIGATORIO — solo dígitos, con lada país
-  mensajeWhatsapp: string;  // OBLIGATORIO — texto pre-armado del wa.me
-  telefono: string;         // OBLIGATORIO — formato E.164
-  telefonoVisible: string;  // OBLIGATORIO — cómo se muestra
+export interface Brand {
+  name: string;
+  kind: string;
+  tagline?: string;
+  /** Favicon and the closing mark of the location section, never the nav. */
+  logo?: Image;
+}
+
+export interface Contact {
+  /** Digits only, country code included, no "+" and no spaces. */
+  whatsapp: string;
+  whatsappMessage: string;
+  /** E.164. */
+  phone: string;
+  phoneDisplay: string;
 }
 
 export interface Hero {
-  titular: string[];        // una entrada por línea; el escalonado anima por línea
-  bajada: string;
+  /** One entry per line — the staggered reveal animates line by line. */
+  headline: string[];
+  subhead: string;
   cta: string;
 }
 
-export interface Calificacion {
-  puntaje: number;          // 4.9
-  total: number;            // 84
-  fuente: string;           // "Google"
-  actualizadoHace?: string; // "hace 2 semanas"
-  urlPerfil?: string;
+export interface Rating {
+  score: number;
+  count: number;
+  source: string;
+  updatedAgo?: string;
+  profileUrl?: string;
 }
 
-export interface PasoMetodo { rotulo: string; texto: string }
+export interface MethodStep {
+  label: string;
+  text: string;
+}
 
-export interface Metodo {
-  titulo: string;
-  entrada?: string;
-  pasos: PasoMetodo[];      // 3 en AXX, pero N en el tipo
+export interface Method {
+  title: string;
+  intro?: string;
+  steps: MethodStep[];
 }
 
 export interface Doctor {
-  nombre: string;
-  rol: string;              // "Director clínico"
-  funcion: string;
-  cita: string;
-  notaPersonal?: string;    // el fun fact, sin rótulo
-  cedula?: string;
-  foto?: Imagen;
+  name: string;
+  role: string;
+  duties: string;
+  quote: string;
+  personalNote?: string;
+  license?: string;
+  photo?: Image;
 }
 
-export interface Especialidad { nombre: string; resuelve: string }
-
-export interface Resena { texto: string; autor: string; fecha?: string }
-
-export interface Resenas {
-  titulo: string;
-  consensos: string[];      // los patrones que se repiten
-  textuales?: Resena[];
+export interface Specialty {
+  name: string;
+  solves: string;
 }
 
-export interface Horario { dias: string; horas: string }
-
-export interface Ubicacion {
-  titulo: string;
-  zona: string;             // "Ciudad Satélite, Naucalpan"
-  direccion?: string[];     // una entrada por línea
-  urlMapa?: string;
-  horarios?: Horario[];
-  formasPago?: string[];
-  mesesSinIntereses?: boolean;
+export interface Review {
+  text: string;
+  author: string;
+  date?: string;
 }
 
-export interface Imagen { src: string; alt: string; ancho: number; alto: number }
+export interface Reviews {
+  title: string;
+  /** Patterns that repeat across the clinic's public reviews. */
+  themes: string[];
+  quotes?: Review[];
+}
 
-export interface Clinica {
-  marca: Marca;
-  contacto: Contacto;
-  tema: Tema;
-  seo: { titulo: string; descripcion: string; url: string };
+export interface Hours {
+  days: string;
+  time: string;
+}
+
+export interface Location {
+  title: string;
+  area: string;
+  /** One entry per line. */
+  address?: string[];
+  mapUrl?: string;
+  hours?: Hours[];
+  paymentMethods?: string[];
+  installments?: boolean;
+}
+
+export interface Clinic {
+  brand: Brand;
+  contact: Contact;
+  theme: Theme;
+  seo: { title: string; description: string; url: string };
 
   hero: Hero;
-  doctores: Doctor[];          // 1..N
-  especialidades: Especialidad[]; // 1..N
+  doctors: Doctor[];
+  specialties: Specialty[];
 
-  // metodo, resenas y ubicacion cargan su propio titulo; doctores y
-  // especialidades son arrays pelados, así que sus encabezados viven aquí.
-  // Sin esto terminarían escritos a mano en index.astro, que es un dato de
-  // cliente fuera de clinica.ts y rompe la reutilización.
-  titulos: { doctores: string; especialidades: string };
+  // method, reviews and location each carry their own title; doctors and
+  // specialties are bare arrays, so their headings live here. Without this
+  // they would end up hardcoded in index.astro — client copy outside
+  // clinic.ts, which is exactly what breaks reuse.
+  titles: { doctors: string; specialties: string };
 
-  calificacion?: Calificacion;
-  metodo?: Metodo;
-  resenas?: Resenas;
-  ubicacion?: Ubicacion;
+  rating?: Rating;
+  method?: Method;
+  reviews?: Reviews;
+  location?: Location;
 }
 ```
 
@@ -169,17 +223,17 @@ Valores para AXX, derivados del logo:
 
 | token | valor | origen |
 |---|---|---|
-| `fondo` | `#FCFCFB` | neutro casi blanco |
-| `superficie` | `#F1F4F3` | tinte verde-gris casi imperceptible; fondo de Reseñas |
-| `tinta` | `#14181A` | el negro del logo (`#161A1C`) |
-| `tintaSuave` | `#5A6461` | |
-| `borde` | `#E3E7E6` | |
-| `acento` | `#1F6B66` | turquesa del logo domado — 5.8:1 sobre `fondo`, AA |
-| `acentoTinta` | `#FCFCFB` | |
-| `inversoFondo` | `#0E2926` | el turquesa llevado al fondo, no un negro genérico |
-| `inversoTinta` | `#EDF3F1` | |
-| `inversoTintaSuave` | `#8FA5A0` | |
-| `acentoClaro` | `#A0F8E2` | el menta del logo — **solo** sobre `inversoFondo` |
+| `background` | `#FCFCFB` | neutro casi blanco |
+| `surface` | `#F1F4F3` | tinte verde-gris casi imperceptible; fondo de Reseñas |
+| `ink` | `#14181A` | el negro del logo (`#161A1C`) |
+| `inkSoft` | `#5A6461` | |
+| `line` | `#E3E7E6` | |
+| `accent` | `#1F6B66` | turquesa del logo domado — 5.8:1 sobre `background`, AA |
+| `accentInk` | `#FCFCFB` | |
+| `invertedBackground` | `#0E2926` | el turquesa llevado al fondo, no un negro genérico |
+| `invertedInk` | `#EDF3F1` | |
+| `invertedInkSoft` | `#8FA5A0` | |
+| `accentLight` | `#A0F8E2` | el menta del logo — **solo** sobre `invertedBackground` |
 
 El menta `#A0F8E2` es ilegible sobre fondo claro y se usa exclusivamente dentro del
 bloque oscuro, donde tiene contraste alto y se lee como el detalle más caro del sitio.
