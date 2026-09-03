@@ -10,7 +10,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --test \"test/**/*.test.ts\"",
+    "test": "node --import ./test/register.js --test \"test/**/*.test.ts\"",
     "check": "astro check"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@types/node": "^26.4.1",
+    "sharp": "^0.35.4",
     "typescript": "^6.0.3"
   }
 }

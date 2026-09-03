@@ -27,27 +27,24 @@ test("both doctors carry a quote and a personal note", () => {
   }
 });
 
-test("both doctor portraits point at the processed files, not the originals", () => {
-  for (const d of clinic.doctors.people) {
-    assert.ok(d.photo, `${d.name} has no photo`);
-    assert.match(d.photo!.src, /^\/doctores\//);
-    assert.equal(d.photo!.width, 600);
-    assert.equal(d.photo!.height, 750);
-    assert.ok(d.photo!.alt.length > 10, `${d.name} has a weak alt text`);
+// The loader hands through the real path of every imported asset, so this
+// catches an image the data points at that is not actually on disk.
+test("every image the client data imports exists", () => {
+  const assets = [
+    clinic.brand.logo?.src,
+    ...clinic.doctors.people.map((d) => d.photo?.src),
+  ].filter(Boolean) as unknown as { src: string }[];
+
+  assert.ok(assets.length > 0);
+  for (const asset of assets) {
+    assert.ok(existsSync(asset.src), `missing asset: ${asset.src}`);
   }
 });
 
-// A typo in a path would pass every other assertion here and ship a broken
-// image to the prospect, so check the files are actually on disk.
-test("every image referenced by the client data exists in public/", () => {
-  const paths = [
-    clinic.brand.logo?.src,
-    ...clinic.doctors.people.map((d) => d.photo?.src),
-  ].filter((s): s is string => Boolean(s));
-
-  assert.ok(paths.length > 0);
-  for (const src of paths) {
-    assert.ok(existsSync(`public${src}`), `missing file: public${src}`);
+test("both doctor portraits carry a real alt text", () => {
+  for (const d of clinic.doctors.people) {
+    assert.ok(d.photo, `${d.name} has no photo`);
+    assert.ok(d.photo!.alt.length > 10, `${d.name} has a weak alt text`);
   }
 });
 

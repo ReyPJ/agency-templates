@@ -23,7 +23,7 @@ const structuredData: Record<string, unknown> = {
 };
 
 if (brand.logo) {
-  structuredData.image = new URL(brand.logo.src, seo.url).href;
+  structuredData.image = new URL(brand.logo.src.src, seo.url).href;
 }
 
 if (rating) {
@@ -92,7 +92,7 @@ if (location?.hours?.length) {
     <meta property="og:description" content={seo.description} />
     <meta property="og:url" content={canonical} />
     {brand.logo && (
-      <meta property="og:image" content={new URL(brand.logo.src, seo.url).href} />
+      <meta property="og:image" content={new URL(brand.logo.src.src, seo.url).href} />
     )}
 
     {/* Data, not executable code: is:inline keeps Astro from bundling it,

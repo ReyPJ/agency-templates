@@ -148,10 +148,12 @@
   max-width: 62ch;
 }
 
-/* The page's one horizontal frame. Everything else is composed inside it. */
+/* The page's one horizontal frame. Everything else is composed inside it.
+   Measured on a 2560px monitor, a 1240px cap left 51% of the screen as dead
+   margin, which is most of what reads as emptiness there. */
 @utility shell {
   width: 100%;
-  max-width: 1240px;
+  max-width: 1360px;
   margin-inline: auto;
   padding-inline: 24px;
 

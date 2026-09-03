@@ -1,5 +1,8 @@
 import type { Clinic } from "./types.ts";
 import { validateClinic } from "./validate.ts";
+import logo from "../assets/axxlogo.jpg";
+import alexander from "../assets/doctores/alexander.jpg";
+import ximena from "../assets/doctores/ximena.jpg";
 
 // Everything that changes between clients lives in this file. Components never
 // name a client, so a new one is resolved here and nowhere else.
@@ -9,12 +12,7 @@ const data: Clinic = {
     name: "AXX Dental",
     kind: "Clínica dental de especialidades",
     tagline: "Salud. Función. Estética.",
-    logo: {
-      src: "/axxlogo.jpg",
-      alt: "AXX Dental",
-      width: 960,
-      height: 960,
-    },
+    logo: { src: logo, alt: "AXX Dental" },
     registration: { label: "COFEPRIS", value: "2315122002A00021" },
   },
 
@@ -88,12 +86,7 @@ const data: Clinic = {
           "Me apasiona devolver la salud, función y estética a nuestros pacientes con atención personalizada. Disfruto explicar de forma clara y gráfica cada tratamiento, y que cada paciente se sienta seguro, informado y acompañado durante su proceso.",
         personalNote:
           "Colecciono piedras de distintas partes del mundo, y me gustan mucho la jardinería y el sushi.",
-        photo: {
-          src: "/doctores/alexander.jpg",
-          alt: "Retrato del Dr. Alexander Patiño",
-          width: 600,
-          height: 750,
-        },
+        photo: { src: alexander, alt: "Retrato del Dr. Alexander Patiño" },
       },
       {
         name: "Dra. Ximena",
@@ -102,12 +95,7 @@ const data: Clinic = {
         quote:
           "Me apasiona guiar a nuestros pacientes hacia una odontología preventiva y conservadora, brindando herramientas y hábitos sostenibles para una salud bucal óptima a largo plazo.",
         personalNote: "Bailo salsa, como helado y escucho cantos de ballenas.",
-        photo: {
-          src: "/doctores/ximena.jpg",
-          alt: "Retrato de la Dra. Ximena",
-          width: 600,
-          height: 750,
-        },
+        photo: { src: ximena, alt: "Retrato de la Dra. Ximena" },
       },
     ],
   },

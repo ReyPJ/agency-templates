@@ -13,11 +13,12 @@ export interface Theme {
   accentLight: string;
 }
 
+/** The imported asset, not a path. Astro reads the real dimensions from it,
+ *  which removes a whole class of typo, and only then can it emit WebP and a
+ *  srcset — images left in public/ are served untouched. */
 export interface Image {
-  src: string;
+  src: ImageMetadata;
   alt: string;
-  width: number;
-  height: number;
 }
 
 export interface Brand {

@@ -8,11 +8,17 @@ interface Props {
 }
 
 const { clinic } = Astro.props;
+const { contact } = clinic;
 ---
 
 {/*
-  The primary call to action on mobile, where people actually look for a
-  dentist. Hidden from md up, where the nav already carries it.
+  Mobile only — the desktop nav already carries both of these.
+
+  Two actions, not one. A single button repeating the hero's call to action
+  sat right underneath it on the first screen and read as a duplicate; a
+  phone call and a message are different choices, and consultorios answer
+  both. The labels are interface vocabulary rather than client copy, so they
+  live here; everything a visitor reads as content still comes from clinic.ts.
 
   Bottom padding uses the safe-area inset so the bar clears the home
   indicator on phones with a gesture bar.
@@ -21,15 +27,21 @@ const { clinic } = Astro.props;
   class="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-background/95 backdrop-blur-sm md:hidden"
   style="padding-bottom: env(safe-area-inset-bottom)"
 >
-  <div class="shell py-3">
+  <div class="shell flex gap-3 py-3">
+    <a
+      href={`tel:${contact.phone}`}
+      class="flex min-h-11 flex-1 items-center justify-center rounded-full border border-accent px-5 py-3 font-medium text-accent"
+    >
+      Llamar
+    </a>
     <a
       href={whatsappUrl(clinic)}
       target="_blank"
       rel="noopener"
-      class="flex min-h-11 items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 font-medium text-accent-ink"
+      class="flex min-h-11 flex-[1.4] items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 font-medium text-accent-ink"
     >
       <WhatsAppIcon class="size-[18px]" />
-      <span>{clinic.hero.cta}</span>
+      <span>WhatsApp</span>
     </a>
   </div>
 </div>

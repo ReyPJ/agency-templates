@@ -10,32 +10,36 @@ const { specialties } = Astro.props;
 
 {/*
   This content is an index — a term and what it means for the patient — so it
-  is set as one, in full-width rows rather than a grid of cards. Identical
-  cards side by side is the single most recognisable tell of a template, and
-  a grid also wastes the right third of the page on seven short lines.
+  is set as one. Identical cards side by side is the most recognisable tell of
+  a template, and a grid also wastes the right third of the page on short lines.
 
-  The rules between rows are structural, not decoration: entries here vary in
-  height, and the line is what says where one ends and the next begins.
+  The rules run edge to edge while the text stays on the page's column. That
+  break is deliberate: it is the one place the layout escapes the container,
+  and it is what stops every section from sitting inside the same box.
 
-  Rows repeat, so four specialties look as deliberate as nine.
+  Deliberately the densest section on the page. Everything around it breathes;
+  without one tight block the whole page reads as evenly sparse, which is what
+  makes an airy layout look unfinished rather than composed.
+
+  Rows repeat, so four specialties look as considered as nine.
 */}
-<section class="bg-surface">
-  <div class="shell py-20 md:py-28">
+<section class="bg-surface py-16 md:py-20">
+  <div class="shell">
     <h2 class="font-display text-heading">{specialties.title}</h2>
-
     {specialties.intro && (
-      <p class="measure mt-5 text-lead text-ink-soft">{specialties.intro}</p>
+      <p class="measure mt-4 text-lead text-ink-soft">{specialties.intro}</p>
     )}
-
-    <dl class="mt-12 md:mt-16">
-      {specialties.items.map((specialty) => (
-        <div class="grid gap-2 border-t border-line py-6 md:grid-cols-12 md:gap-8 md:py-7">
-          <dt class="font-display text-step md:col-span-4">{specialty.name}</dt>
-          <dd class="text-ink-soft md:col-span-7 md:col-start-6 md:self-center">
-            {specialty.solves}
-          </dd>
-        </div>
-      ))}
-    </dl>
   </div>
+
+  <dl class="mt-10 md:mt-12">
+    {specialties.items.map((specialty) => (
+      <div class="border-t border-line">
+        <div class="shell grid gap-1 py-4 md:grid-cols-12 md:items-baseline md:gap-8 md:py-5">
+          <dt class="font-display text-step md:col-span-4">{specialty.name}</dt>
+          <dd class="text-ink-soft md:col-span-8">{specialty.solves}</dd>
+        </div>
+      </div>
+    ))}
+    <div class="border-t border-line"></div>
+  </dl>
 </section>
