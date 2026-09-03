@@ -1,0 +1,23 @@
+{
+  // ─── Lo único que se cambia por cliente ───────────────────────────────────
+  // El nombre del Worker de Cloudflare al que se publica. Va en mayúsculas a
+  // propósito: los nombres de Worker son minúsculas, así que un deploy sin
+  // tocar esta línea falla en vez de publicar en un Worker equivocado.
+  "name": "CAMBIAR-por-el-nombre-del-cliente",
+
+  // ─── El resto es igual para todos ─────────────────────────────────────────
+  // Este archivo no es opcional. Sin él, `wrangler deploy` entra en su modo de
+  // auto-configuración: detecta que el proyecto es Astro y, como en CI no hay
+  // terminal interactiva, contesta "sí" por su cuenta a `astro add cloudflare`.
+  // Eso instala el adaptador y reconstruye el sitio — y esa segunda
+  // construcción, la que se publica, ya no optimiza imágenes: deja el HTML
+  // apuntando a /_image?href=..., que en un sitio de assets estáticos no
+  // responde nadie. Resultado: el sitio se ve bien y ninguna imagen carga.
+  //
+  // Declarando el deploy aquí no queda nada que adivinar: se publica dist/ tal
+  // cual lo dejó `pnpm build`. Ver docs/imagenes-404-cloudflare.md.
+  "compatibility_date": "2026-09-03",
+  "assets": {
+    "directory": "./dist"
+  }
+}

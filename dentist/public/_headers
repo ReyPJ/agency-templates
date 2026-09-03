@@ -1,0 +1,4 @@
+# Todo lo que Astro emite en /_astro/ lleva un hash del contenido en el nombre:
+# si el archivo cambia, cambia la URL. Por eso puede cachearse para siempre.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

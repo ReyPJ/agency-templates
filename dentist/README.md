@@ -74,21 +74,35 @@ El sitio es **estático**: `pnpm build` deja en `dist/` todo lo que el navegador
 va a pedir, incluidos los WebP ya generados. No hay servidor, así que no debe
 haber adaptador de Astro.
 
-Eso importa porque un adaptador cambia el manejo de imágenes: en vez de
-optimizarlas durante el build, deja el HTML apuntando a `/_image?href=...`, una
-ruta que solo responde si hay un servidor detrás. Publicado como archivos
-estáticos, **todas las imágenes dan 404** — el resto del sitio se ve bien, que
-es lo que hace difícil de notar el problema. Es exactamente lo que pasa cuando
-Cloudflare Workers adopta el proyecto con `@astrojs/cloudflare`: su ajuste por
-defecto (`imageService: 'cloudflare-binding'`) transforma en runtime.
+Un adaptador cambia el manejo de imágenes: en vez de optimizarlas durante el
+build, deja el HTML apuntando a `/_image?href=...`, una ruta que solo responde
+si hay un servidor detrás. Publicado como archivos estáticos, **todas las
+imágenes dan 404** — el resto del sitio se ve bien, que es lo que vuelve difícil
+de notar el problema.
 
-En Cloudflare, entonces: build `pnpm build`, directorio de salida `dist`, y sin
-adaptador instalado. Si por lo que sea hace falta uno, tiene que llevar
-`imageService: 'compile'` para que las imágenes se generen durante el build.
+Y no alcanza con no instalarlo: **`wrangler deploy` lo instala solo**. Cuando no
+encuentra configuración de wrangler en el proyecto arranca su
+auto-configuración, detecta que es Astro y, como en CI no hay terminal
+interactiva, contesta «sí» por su cuenta a `astro add cloudflare`. Después
+reconstruye, y esa segunda construcción —ya con adaptador— es la que se publica.
+El repo se queda limpio y el sitio sale roto.
+
+Por eso la plantilla trae `wrangler.jsonc`: declara el deploy como un Worker de
+assets estáticos sobre `dist/`, de modo que no queda nada que adivinar y se
+publica exactamente lo que verificó el build. **Cambiá el `name` por el del
+cliente** — es la única línea del archivo que varía.
+
+En Cloudflare: comando de build `pnpm build`, directorio de salida `dist`.
 
 `scripts/verify-dist.mjs` corre al final de `pnpm build` y hace fallar el build
 si el HTML quedó apuntando a `/_image` o a cualquier archivo que no exista en
 `dist/`. Vale más un deploy fallido que un sitio publicado sin imágenes.
+
+`public/_headers` marca `/_astro/*` como inmutable: esos nombres llevan un hash
+del contenido, así que pueden cachearse para siempre.
+
+El procedimiento completo —diagnóstico y corrección de un sitio ya roto— está en
+[`docs/imagenes-404-cloudflare.md`](docs/imagenes-404-cloudflare.md).
 
 ## Cómo está construido
 
