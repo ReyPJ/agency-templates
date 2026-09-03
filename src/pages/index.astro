@@ -1,14 +1,25 @@
 ---
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Method from "../components/Method.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import { clinic } from "../data/clinic.ts";
+import { whatsappUrl } from "../data/validate.ts";
+
+const ctaUrl = whatsappUrl(clinic);
 ---
 
 <Base clinic={clinic}>
   <Nav clinic={clinic} />
   <main>
-    <h1>{clinic.hero.headline.join(" ")}</h1>
+    <Hero
+      hero={clinic.hero}
+      brand={clinic.brand}
+      rating={clinic.rating}
+      ctaUrl={ctaUrl}
+    />
+    {clinic.method && <Method method={clinic.method} />}
   </main>
   <WhatsAppButton clinic={clinic} />
 </Base>

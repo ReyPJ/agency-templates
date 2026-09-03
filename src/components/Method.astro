@@ -1,0 +1,33 @@
+---
+import type { Method } from "../data/types.ts";
+
+interface Props {
+  method: Method;
+}
+
+const { method } = Astro.props;
+---
+
+{/*
+  The one thing no competitor in the area has written down, so it runs second,
+  before the specialties, and phase two gives it the only inverted background
+  on the page.
+
+  An ordered list, not a styled div: these are three real steps in sequence,
+  which is what makes numbering them honest. The visible numerals come from a
+  CSS counter, so the markup carries order and the stylesheet carries looks.
+*/}
+<section>
+  <h2>{method.title}</h2>
+
+  {method.intro && <p>{method.intro}</p>}
+
+  <ol>
+    {method.steps.map((step) => (
+      <li>
+        <h3>{step.label}</h3>
+        <p>{step.text}</p>
+      </li>
+    ))}
+  </ol>
+</section>
