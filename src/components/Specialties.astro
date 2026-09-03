@@ -38,15 +38,16 @@ const { specialties } = Astro.props;
     )}
   </div>
 
+  {/* One div per pair and no deeper: a <dl> may wrap each term/definition
+      group in a single <div>, but nesting them two levels deep breaks the
+      list semantics outright — which is exactly what an earlier version did. */}
   <dl class="mt-12 md:mt-16">
     {specialties.items.map((specialty) => (
-      <div class="border-t border-line">
-        <div class="shell grid gap-1 py-4 md:grid-cols-12 md:items-baseline md:gap-8 md:py-5">
-          <dt class="font-display text-step text-accent md:col-span-4">
-            {specialty.name}
-          </dt>
-          <dd class="text-ink-soft md:col-span-8">{specialty.solves}</dd>
-        </div>
+      <div class="shell-inset grid gap-1 border-t border-line py-4 md:grid-cols-12 md:items-baseline md:gap-8 md:py-5">
+        <dt class="font-display text-step text-accent md:col-span-4">
+          {specialty.name}
+        </dt>
+        <dd class="text-ink-soft md:col-span-8">{specialty.solves}</dd>
       </div>
     ))}
     <div class="border-t border-line"></div>

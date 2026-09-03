@@ -144,6 +144,20 @@
   }
 }
 
+/* The shell's outer offset as padding, for a full-width element that needs its
+   content on the page column while its own background or rules run edge to
+   edge. 680px is half the shell's max width. */
+@utility shell-inset {
+  padding-inline: max(24px, calc(50% - 680px + 24px));
+
+  @media (min-width: 768px) {
+    padding-inline: max(48px, calc(50% - 680px + 48px));
+  }
+  @media (min-width: 1280px) {
+    padding-inline: max(64px, calc(50% - 680px + 64px));
+  }
+}
+
 @utility measure {
   max-width: 62ch;
 }
