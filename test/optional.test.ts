@@ -25,18 +25,19 @@ test("every optional section can be dropped at once", () => {
 
 test("a clinic with a single doctor is still valid", () => {
   assert.doesNotThrow(() =>
-    validateClinic({ ...clinic, doctors: [clinic.doctors[0]] }));
+    validateClinic({ ...clinic, doctors: { ...clinic.doctors, people: [clinic.doctors.people[0]] } }));
 });
 
 test("a clinic with four specialties is still valid", () => {
   assert.doesNotThrow(() =>
-    validateClinic({ ...clinic, specialties: clinic.specialties.slice(0, 4) }));
+    validateClinic({ ...clinic, specialties: { ...clinic.specialties, items: clinic.specialties.items.slice(0, 4) } }));
 });
 
 test("doctors render without a photo", () => {
-  const withoutPhotos = clinic.doctors.map(({ photo, ...d }) => d);
-  assert.equal(withoutPhotos.length, clinic.doctors.length);
-  assert.doesNotThrow(() => validateClinic({ ...clinic, doctors: withoutPhotos }));
+  const people = clinic.doctors.people.map(({ photo, ...d }) => d);
+  assert.equal(people.length, clinic.doctors.people.length);
+  assert.doesNotThrow(() =>
+    validateClinic({ ...clinic, doctors: { ...clinic.doctors, people } }));
 });
 
 test("a brand with no logo and no tagline is still valid", () => {

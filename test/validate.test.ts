@@ -20,9 +20,14 @@ function base(): Clinic {
     },
     seo: { title: "t", description: "d", url: "https://ejemplo.mx" },
     hero: { headline: ["Una línea"], subhead: "b", cta: "Agendar" },
-    doctors: [{ name: "Dra. N", role: "r", duties: "f", quote: "c" }],
-    specialties: [{ name: "Ortodoncia", solves: "r" }],
-    titles: { doctors: "Doctores", specialties: "Especialidades" },
+    doctors: {
+      title: "Doctores",
+      people: [{ name: "Dra. N", role: "r", duties: "f", quote: "c" }],
+    },
+    specialties: {
+      title: "Especialidades",
+      items: [{ name: "Ortodoncia", solves: "r" }],
+    },
     closing: { headline: "Una frase de cierre.", cta: "Agendar" },
   };
 }
@@ -84,8 +89,8 @@ test("rejects a hero with no headline lines", () => {
 });
 
 test("rejects zero doctors", () => {
-  const c = base(); c.doctors = [];
-  assert.throws(() => validateClinic(c), /doctors/);
+  const c = base(); c.doctors.people = [];
+  assert.throws(() => validateClinic(c), /doctors\.people/);
 });
 
 test("rejects an empty closing headline", () => {
@@ -99,8 +104,8 @@ test("rejects an empty closing cta", () => {
 });
 
 test("rejects zero specialties", () => {
-  const c = base(); c.specialties = [];
-  assert.throws(() => validateClinic(c), /specialties/);
+  const c = base(); c.specialties.items = [];
+  assert.throws(() => validateClinic(c), /specialties\.items/);
 });
 
 // Digit-count boundaries, checked on both phone-ish fields.

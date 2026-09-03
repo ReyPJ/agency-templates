@@ -14,37 +14,37 @@ const { reviews, rating } = Astro.props;
   quotes simply stack. Reads as finished with or without verbatim reviews,
   which matters because clients hand those over late or never.
 
-  The score is set at display size because it is the strongest evidence on
-  the page and it belongs to the patients, not to the clinic's own copy.
+  The score runs at graphic scale and in the brand colour because it is the
+  strongest evidence on the page and it belongs to the patients, not to the
+  clinic's own copy. Set small and grey it read like a caption.
 */}
-<section class="shell py-24 md:py-40">
-  <div class="grid gap-16 lg:grid-cols-12 lg:gap-12">
-    <div class="lg:col-span-5">
-      <h2 class="font-display text-heading">{reviews.title}</h2>
+<section class="shell py-24 md:py-32">
+  <h2 class="font-display text-heading">{reviews.title}</h2>
 
-      {rating && (
-        <p class="mt-10">
-          <span class="block font-display text-display tabular-nums leading-none">
-            {rating.score}
-          </span>
-          <span class="mt-4 block text-small text-ink-soft">
-            de 5 en <span class="tabular-nums">{rating.count}</span> reseñas de
-            {" "}{rating.source}{rating.updatedAgo && `, la más reciente ${rating.updatedAgo}`}.
-          </span>
+  <div class="mt-12 grid gap-12 md:mt-16 md:grid-cols-12 md:gap-10 lg:gap-16">
+    {rating && (
+      <div class="md:col-span-4">
+        <p class="score font-display tabular-nums text-accent">{rating.score}</p>
+        <p class="mt-2 text-small text-ink-soft">
+          de 5 en <span class="tabular-nums">{rating.count}</span> reseñas de
+          {" "}{rating.source}
         </p>
-      )}
-    </div>
+        {rating.updatedAgo && (
+          <p class="text-small text-ink-soft">La más reciente, {rating.updatedAgo}.</p>
+        )}
+      </div>
+    )}
 
     {/* What patients keep repeating, not a claim the clinic makes about itself. */}
-    <div class="lg:col-span-6 lg:col-start-7">
-      <ul class="grid gap-8">
+    <div class:list={["md:col-span-7", rating ? "md:col-start-6" : "md:col-start-1"]}>
+      <ul class="grid gap-7">
         {reviews.themes.map((theme) => (
           <li class="text-lead">{theme}</li>
         ))}
       </ul>
 
       {reviews.quotes && reviews.quotes.length > 0 && (
-        <ul class="mt-16 grid gap-12">
+        <ul class="mt-14 grid gap-10">
           {reviews.quotes.map((quote) => (
             <li>
               <blockquote>
@@ -61,3 +61,13 @@ const { reviews, rating } = Astro.props;
     </div>
   </div>
 </section>
+
+<style>
+  /* Larger than any other type on the page apart from the headline: the
+     number is doing the work of an image here. */
+  .score {
+    font-size: clamp(5.5rem, 2rem + 13vw, 11rem);
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+  }
+</style>

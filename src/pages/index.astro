@@ -30,12 +30,9 @@ const ctaUrl = whatsappUrl(clinic);
 
     {clinic.method && <Method method={clinic.method} />}
 
-    <Doctors doctors={clinic.doctors} title={clinic.titles.doctors} />
+    <Doctors doctors={clinic.doctors} />
 
-    <Specialties
-      specialties={clinic.specialties}
-      title={clinic.titles.specialties}
-    />
+    <Specialties specialties={clinic.specialties} />
 
     {clinic.reviews && (
       <Reviews reviews={clinic.reviews} rating={clinic.rating} />

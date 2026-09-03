@@ -30,10 +30,10 @@ export function validateClinic(c: Clinic): Clinic {
     throw new InvalidClinic("contact.phoneDisplay", "cannot be empty");
   if (!c.hero?.headline?.length)
     throw new InvalidClinic("hero.headline", "needs at least one line");
-  if (!c.doctors?.length)
-    throw new InvalidClinic("doctors", "needs at least one doctor");
-  if (!c.specialties?.length)
-    throw new InvalidClinic("specialties", "needs at least one specialty");
+  if (!c.doctors?.people?.length)
+    throw new InvalidClinic("doctors.people", "needs at least one doctor");
+  if (!c.specialties?.items?.length)
+    throw new InvalidClinic("specialties.items", "needs at least one specialty");
   if (!c.closing?.headline?.trim())
     throw new InvalidClinic("closing.headline", "cannot be empty");
   if (!c.closing?.cta?.trim())

@@ -26,6 +26,9 @@ export interface Brand {
   tagline?: string;
   /** Favicon and the closing mark of the location section, never the nav. */
   logo?: Image;
+  /** Health-authority registration. Almost no competitor publishes theirs,
+   *  so it is a cheap and real credibility marker in the colophon. */
+  registration?: { label: string; value: string };
 }
 
 export interface Contact {
@@ -78,6 +81,21 @@ export interface Specialty {
   solves: string;
 }
 
+/* Doctors and specialties are sections like any other, so they carry their
+   own heading and lead-in rather than having them kept in a separate bag. */
+
+export interface DoctorsSection {
+  title: string;
+  intro?: string;
+  people: Doctor[];
+}
+
+export interface SpecialtiesSection {
+  title: string;
+  intro?: string;
+  items: Specialty[];
+}
+
 export interface Review {
   text: string;
   author: string;
@@ -121,14 +139,8 @@ export interface Clinic {
   seo: { title: string; description: string; url: string };
 
   hero: Hero;
-  doctors: Doctor[];
-  specialties: Specialty[];
-
-  // method, reviews and location each carry their own title; doctors and
-  // specialties are bare arrays, so their headings live here. Without this
-  // they would end up hardcoded in index.astro — client copy outside
-  // clinic.ts, which is exactly what breaks reuse.
-  titles: { doctors: string; specialties: string };
+  doctors: DoctorsSection;
+  specialties: SpecialtiesSection;
   closing: Closing;
 
   rating?: Rating;

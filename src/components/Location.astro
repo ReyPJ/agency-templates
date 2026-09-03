@@ -146,7 +146,17 @@ const hasPracticalInfo = Boolean(
         </div>
       </div>
 
-      <p class="text-small text-ink-soft tabular-nums">© {year} {brand.name}</p>
+      <div class="text-small text-ink-soft sm:text-right">
+        {/* Health-authority registration. Almost no competitor publishes
+            theirs, so it is cheap, real proof that the clinic is licensed. */}
+        {brand.registration && (
+          <p>
+            {brand.registration.label}{" "}
+            <span class="tabular-nums">{brand.registration.value}</span>
+          </p>
+        )}
+        <p class="tabular-nums">© {year} {brand.name}</p>
+      </div>
     </div>
   </div>
 </footer>

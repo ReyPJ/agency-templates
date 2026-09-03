@@ -15,6 +15,7 @@ const data: Clinic = {
       width: 960,
       height: 960,
     },
+    registration: { label: "COFEPRIS", value: "2315122002A00021" },
   },
 
   contact: {
@@ -77,79 +78,82 @@ const data: Clinic = {
     ],
   },
 
-  doctors: [
-    {
-      name: "Dr. Alexander Patiño",
-      role: "Director clínico",
-      duties: "Primer contacto con el paciente, análisis, diagnóstico y endodoncia.",
-      quote:
-        "Me apasiona devolver la salud, función y estética a nuestros pacientes con atención personalizada. Disfruto explicar de forma clara y gráfica cada tratamiento, y que cada paciente se sienta seguro, informado y acompañado durante su proceso.",
-      personalNote:
-        "Colecciono piedras de distintas partes del mundo, y me gustan mucho la jardinería y el sushi.",
-      photo: {
-        src: "/doctores/alexander.jpg",
-        alt: "Retrato del Dr. Alexander Patiño",
-        width: 480,
-        height: 600,
+  doctors: {
+    title: "Quién te va a atender",
+    people: [
+      {
+        name: "Dr. Alexander Patiño",
+        role: "Director clínico",
+        duties: "Primer contacto con el paciente, análisis, diagnóstico y endodoncia.",
+        quote:
+          "Me apasiona devolver la salud, función y estética a nuestros pacientes con atención personalizada. Disfruto explicar de forma clara y gráfica cada tratamiento, y que cada paciente se sienta seguro, informado y acompañado durante su proceso.",
+        personalNote:
+          "Colecciono piedras de distintas partes del mundo, y me gustan mucho la jardinería y el sushi.",
+        photo: {
+          src: "/doctores/alexander.jpg",
+          alt: "Retrato del Dr. Alexander Patiño",
+          width: 480,
+          height: 600,
+        },
       },
-    },
-    {
-      name: "Dra. Ximena",
-      role: "Coordinadora clínica",
-      duties: "Primer contacto con el paciente, análisis y diagnóstico.",
-      quote:
-        "Me apasiona guiar a nuestros pacientes hacia una odontología preventiva y conservadora, brindando herramientas y hábitos sostenibles para una salud bucal óptima a largo plazo.",
-      personalNote: "Bailo salsa, como helado y escucho cantos de ballenas.",
-      photo: {
-        src: "/doctores/ximena.jpg",
-        alt: "Retrato de la Dra. Ximena",
-        width: 480,
-        height: 600,
+      {
+        name: "Dra. Ximena",
+        role: "Coordinadora clínica",
+        duties: "Primer contacto con el paciente, análisis y diagnóstico.",
+        quote:
+          "Me apasiona guiar a nuestros pacientes hacia una odontología preventiva y conservadora, brindando herramientas y hábitos sostenibles para una salud bucal óptima a largo plazo.",
+        personalNote: "Bailo salsa, como helado y escucho cantos de ballenas.",
+        photo: {
+          src: "/doctores/ximena.jpg",
+          alt: "Retrato de la Dra. Ximena",
+          width: 480,
+          height: 600,
+        },
       },
-    },
-  ],
+    ],
+  },
 
-  specialties: [
-    {
-      name: "Ortodoncia",
-      solves:
-        "Mueve los dientes y la mandíbula a su lugar, con brackets o con alineadores. No es solo cómo se ve: es cómo muerdes.",
-    },
-    {
-      name: "Endodoncia",
-      solves:
-        "Cuando la infección llega al nervio, se limpia el diente por dentro. Es lo que evita tener que sacarlo.",
-    },
-    {
-      name: "Periodoncia",
-      solves:
-        "Encías que sangran, se inflaman o se retiran, y el hueso que sostiene los dientes. Desde una gingivitis hasta una periodontitis avanzada.",
-    },
-    {
-      name: "Odontopediatría",
-      solves:
-        "Bebés, niños y adolescentes. Se previenen caries, se vigila cómo van saliendo los dientes y se arman hábitos que duran.",
-    },
-    {
-      name: "Estética Dental",
-      solves:
-        "Color, forma y proporción de la sonrisa: blanqueamiento, carillas, composite y diseño de sonrisa.",
-    },
-    {
-      name: "Cirugía Oral",
-      solves:
-        "Muelas del juicio, frenillos, quistes, injertos de hueso y todo lo que hay que hacer antes de un implante.",
-    },
-    {
-      name: "Implantología",
-      solves:
-        "Un implante de titanio ocupa el lugar del diente que perdiste y se integra al hueso. Función y estética, de forma permanente.",
-    },
-  ],
-
-  titles: {
-    doctors: "Quién te va a atender",
-    specialties: "Especialidades",
+  specialties: {
+    title: "Especialidades",
+    intro:
+      "Todas en el mismo lugar, para toda la familia y en cada momento de tu vida.",
+    items: [
+      {
+        name: "Ortodoncia",
+        solves:
+          "Mueve los dientes y la mandíbula a su lugar, con brackets o con alineadores. No es solo cómo se ve: es cómo muerdes.",
+      },
+      {
+        name: "Endodoncia",
+        solves:
+          "Cuando la infección llega al nervio, se limpia el diente por dentro. Es lo que evita tener que sacarlo.",
+      },
+      {
+        name: "Periodoncia",
+        solves:
+          "Encías que sangran, se inflaman o se retiran, y el hueso que sostiene los dientes. Desde una gingivitis hasta una periodontitis avanzada.",
+      },
+      {
+        name: "Odontopediatría",
+        solves:
+          "Bebés, niños y adolescentes. Se previenen caries, se vigila cómo van saliendo los dientes y se arman hábitos que duran.",
+      },
+      {
+        name: "Estética Dental",
+        solves:
+          "Color, forma y proporción de la sonrisa: blanqueamiento, carillas, composite y diseño de sonrisa.",
+      },
+      {
+        name: "Cirugía Oral",
+        solves:
+          "Muelas del juicio, frenillos, quistes, injertos de hueso y todo lo que hay que hacer antes de un implante.",
+      },
+      {
+        name: "Implantología",
+        solves:
+          "Un implante de titanio ocupa el lugar del diente que perdiste y se integra al hueso. Función y estética, de forma permanente.",
+      },
+    ],
   },
 
   closing: {

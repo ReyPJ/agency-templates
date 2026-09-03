@@ -1,12 +1,11 @@
 ---
-import type { Doctor } from "../data/types.ts";
+import type { DoctorsSection } from "../data/types.ts";
 
 interface Props {
-  doctors: Doctor[];
-  title: string;
+  doctors: DoctorsSection;
 }
 
-const { doctors, title } = Astro.props;
+const { doctors } = Astro.props;
 ---
 
 {/*
@@ -21,10 +20,14 @@ const { doctors, title } = Astro.props;
   Any number of doctors works: rows just repeat.
 */}
 <section class="shell py-24 md:py-40">
-  <h2 class="font-display text-heading measure">{title}</h2>
+  <h2 class="font-display text-heading measure">{doctors.title}</h2>
+
+  {doctors.intro && (
+    <p class="measure mt-5 text-lead text-ink-soft">{doctors.intro}</p>
+  )}
 
   <ul class="mt-16 grid gap-20 md:mt-24 md:gap-32">
-    {doctors.map((doctor) => (
+    {doctors.people.map((doctor) => (
       <li class="grid gap-8 md:grid-cols-12 md:gap-10 lg:gap-16">
         {doctor.photo && (
           <img
@@ -34,18 +37,18 @@ const { doctors, title } = Astro.props;
             height={doctor.photo.height}
             loading="lazy"
             decoding="async"
-            class="aspect-4/5 w-full max-w-[280px] object-cover md:col-span-4 md:max-w-none"
+            class="aspect-4/5 w-full max-w-[300px] object-cover md:col-span-5 md:max-w-none lg:col-span-4"
           />
         )}
 
-        <div class="md:col-span-8">
+        <div class="md:col-span-7 lg:col-span-8">
           <blockquote>
             <p class="font-display text-step italic">{doctor.quote}</p>
           </blockquote>
 
           <div class="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 class="font-medium">{doctor.name}</h3>
-            <p class="text-small text-ink-soft">{doctor.role}</p>
+            <p class="text-small text-accent">{doctor.role}</p>
           </div>
 
           <p class="measure mt-6 text-small text-ink-soft">{doctor.duties}</p>

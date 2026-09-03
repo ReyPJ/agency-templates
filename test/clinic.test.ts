@@ -6,29 +6,29 @@ import { validateClinic } from "../src/data/validate.ts";
 
 test("carries the seven specialties from the client's own list", () => {
   assert.deepEqual(
-    clinic.specialties.map((s) => s.name),
+    clinic.specialties.items.map((s) => s.name),
     ["Ortodoncia", "Endodoncia", "Periodoncia", "Odontopediatría",
      "Estética Dental", "Cirugía Oral", "Implantología"],
   );
 });
 
 test("every specialty says what it solves, in plain language", () => {
-  for (const s of clinic.specialties) {
+  for (const s of clinic.specialties.items) {
     assert.ok(s.solves.length > 20, `${s.name} has no description`);
     assert.match(s.solves, /^[A-ZÁÉÍÓÚÑ]/, `${s.name} should read as a sentence`);
   }
 });
 
 test("both doctors carry a quote and a personal note", () => {
-  assert.equal(clinic.doctors.length, 2);
-  for (const d of clinic.doctors) {
+  assert.equal(clinic.doctors.people.length, 2);
+  for (const d of clinic.doctors.people) {
     assert.ok(d.quote.length > 40, `${d.name} has no quote`);
     assert.ok(d.personalNote, `${d.name} has no personal note`);
   }
 });
 
 test("both doctor portraits point at the processed files, not the originals", () => {
-  for (const d of clinic.doctors) {
+  for (const d of clinic.doctors.people) {
     assert.ok(d.photo, `${d.name} has no photo`);
     assert.match(d.photo!.src, /^\/doctores\//);
     assert.equal(d.photo!.width, 480);
@@ -42,7 +42,7 @@ test("both doctor portraits point at the processed files, not the originals", ()
 test("every image referenced by the client data exists in public/", () => {
   const paths = [
     clinic.brand.logo?.src,
-    ...clinic.doctors.map((d) => d.photo?.src),
+    ...clinic.doctors.people.map((d) => d.photo?.src),
   ].filter((s): s is string => Boolean(s));
 
   assert.ok(paths.length > 0);
