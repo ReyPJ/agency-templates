@@ -1,0 +1,23 @@
+---
+import type { Clinic } from "../data/types.ts";
+import { whatsappUrl } from "../data/validate.ts";
+import WhatsAppIcon from "./icons/WhatsAppIcon.astro";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+---
+
+{/*
+  The primary call to action on mobile, where people actually look for a
+  dentist. Styling pins it to the bottom of the viewport in phase two;
+  here it is just a link, so it works with CSS disabled.
+*/}
+<div>
+  <a href={whatsappUrl(clinic)} target="_blank" rel="noopener">
+    <WhatsAppIcon />
+    <span>{clinic.hero.cta}</span>
+  </a>
+</div>

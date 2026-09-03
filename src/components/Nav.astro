@@ -1,0 +1,36 @@
+---
+import type { Clinic } from "../data/types.ts";
+import { whatsappUrl } from "../data/validate.ts";
+import WhatsAppIcon from "./icons/WhatsAppIcon.astro";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+const { brand, contact } = clinic;
+---
+
+{/*
+  No navigation menu and no hamburger: five sections make scrolling enough,
+  and a mobile menu would cost JavaScript this project does not spend.
+  The wordmark is set in type — the client's logo is a low-resolution JPEG
+  and putting it here would drag the whole page down with it.
+*/}
+<header>
+  <nav aria-label="Principal">
+    <a href="/" aria-label={`${brand.name} — inicio`}>{brand.name}</a>
+
+    <ul>
+      <li>
+        <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a>
+      </li>
+      <li>
+        <a href={whatsappUrl(clinic)} target="_blank" rel="noopener">
+          <WhatsAppIcon />
+          <span>WhatsApp</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
