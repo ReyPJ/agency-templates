@@ -31,8 +31,8 @@ test("both doctor portraits point at the processed files, not the originals", ()
   for (const d of clinic.doctors.people) {
     assert.ok(d.photo, `${d.name} has no photo`);
     assert.match(d.photo!.src, /^\/doctores\//);
-    assert.equal(d.photo!.width, 480);
-    assert.equal(d.photo!.height, 600);
+    assert.equal(d.photo!.width, 600);
+    assert.equal(d.photo!.height, 750);
     assert.ok(d.photo!.alt.length > 10, `${d.name} has a weak alt text`);
   }
 });

@@ -28,7 +28,7 @@ const { doctors } = Astro.props;
 
   <ul class="mt-16 grid gap-20 md:mt-24 md:gap-32">
     {doctors.people.map((doctor) => (
-      <li class="grid gap-8 md:grid-cols-12 md:gap-10 lg:gap-16">
+      <li class="grid gap-8 md:grid-cols-12 md:gap-10 lg:gap-14">
         {doctor.photo && (
           <img
             src={doctor.photo.src}
@@ -37,11 +37,11 @@ const { doctors } = Astro.props;
             height={doctor.photo.height}
             loading="lazy"
             decoding="async"
-            class="aspect-4/5 w-full max-w-[300px] object-cover md:col-span-5 md:max-w-none lg:col-span-4"
+            class="aspect-4/5 w-full object-cover md:col-span-5 lg:col-span-5"
           />
         )}
 
-        <div class="md:col-span-7 lg:col-span-8">
+        <div class="md:col-span-7 md:self-center lg:col-span-6 lg:col-start-7">
           <blockquote>
             <p class="font-display text-step italic">{doctor.quote}</p>
           </blockquote>

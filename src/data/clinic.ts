@@ -91,8 +91,8 @@ const data: Clinic = {
         photo: {
           src: "/doctores/alexander.jpg",
           alt: "Retrato del Dr. Alexander Patiño",
-          width: 480,
-          height: 600,
+          width: 600,
+          height: 750,
         },
       },
       {
@@ -105,8 +105,8 @@ const data: Clinic = {
         photo: {
           src: "/doctores/ximena.jpg",
           alt: "Retrato de la Dra. Ximena",
-          width: 480,
-          height: 600,
+          width: 600,
+          height: 750,
         },
       },
     ],
