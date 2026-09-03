@@ -42,7 +42,7 @@ const data: Clinic = {
     title: "AXX Dental — Clínica dental de especialidades en Ciudad Satélite",
     description:
       "Antes de tocar un diente, escuchamos. Clínica dental de especialidades en Ciudad Satélite, Naucalpan. 4.9 de 5 en 84 reseñas de Google.",
-    url: "https://axxdental.vercel.app",
+    url: "https://axxdental.reynerpaniagua.dev",
   },
 
   hero: {

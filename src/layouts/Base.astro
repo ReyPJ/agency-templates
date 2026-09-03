@@ -1,0 +1,110 @@
+---
+import type { Clinic } from "../data/types.ts";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+const { brand, seo, theme, contact, rating, location } = clinic;
+
+const canonical = new URL(Astro.url.pathname, seo.url).href;
+
+// Built from the client data, so a new client gets correct structured data
+// without anyone editing this file.
+const structuredData: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "Dentist",
+  name: brand.name,
+  description: seo.description,
+  url: seo.url,
+  telephone: contact.phone,
+};
+
+if (brand.logo) {
+  structuredData.image = new URL(brand.logo.src, seo.url).href;
+}
+
+if (rating) {
+  structuredData.aggregateRating = {
+    "@type": "AggregateRating",
+    ratingValue: rating.score,
+    reviewCount: rating.count,
+  };
+}
+
+if (location?.address?.length) {
+  structuredData.address = {
+    "@type": "PostalAddress",
+    streetAddress: location.address.join(", "),
+    addressLocality: location.area,
+    addressCountry: "MX",
+  };
+} else if (location?.area) {
+  // No street address yet — say what area is served rather than emit an
+  // address that is only half true.
+  structuredData.areaServed = location.area;
+}
+
+if (location?.hours?.length) {
+  structuredData.openingHours = location.hours.map((h) => `${h.days} ${h.time}`);
+}
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon-180.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:url" content={canonical} />
+    {brand.logo && (
+      <meta property="og:image" content={new URL(brand.logo.src, seo.url).href} />
+    )}
+
+    {/* Data, not executable code: is:inline keeps Astro from bundling it,
+        so it costs nothing against the JavaScript budget. */}
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(structuredData)}
+    />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>
+
+{/*
+  define:vars lands as an inline style attribute on <html>, so these become
+  real custom properties on :root. Tailwind's @theme maps --color-* onto them,
+  which is why nothing below the layout ever names a colour value.
+*/}
+<style
+  define:vars={{
+    "theme-background": theme.background,
+    "theme-surface": theme.surface,
+    "theme-ink": theme.ink,
+    "theme-ink-soft": theme.inkSoft,
+    "theme-line": theme.line,
+    "theme-accent": theme.accent,
+    "theme-accent-ink": theme.accentInk,
+    "theme-inverted-background": theme.invertedBackground,
+    "theme-inverted-ink": theme.invertedInk,
+    "theme-inverted-ink-soft": theme.invertedInkSoft,
+    "theme-accent-light": theme.accentLight,
+  }}
+></style>
