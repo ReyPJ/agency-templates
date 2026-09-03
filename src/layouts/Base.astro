@@ -62,11 +62,21 @@ if (location?.hours?.length) {
     <meta name="description" content={seo.description} />
     <link rel="canonical" href={canonical} />
 
-    {/* Only the display face. It carries the LCP text; preloading all three
-        would make them compete for bandwidth and land the headline later. */}
+    {/* Both faces are used above the fold — the headline is the serif, the
+        subhead, nav and button are the sans — and Lighthouse measures the LCP
+        on the subhead. Preloading only the serif left the sans to be
+        discovered late and cost 1.3s of render delay. The italic is not
+        preloaded: it first appears in the doctors' quotes, well below. */}
     <link
       rel="preload"
       href="/fonts/instrument-serif.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter.woff2"
       as="font"
       type="font/woff2"
       crossorigin

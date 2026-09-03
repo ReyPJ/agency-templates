@@ -35,8 +35,8 @@ test("a clinic with four specialties is still valid", () => {
 
 test("doctors render without a photo", () => {
   const withoutPhotos = clinic.doctors.map(({ photo, ...d }) => d);
+  assert.equal(withoutPhotos.length, clinic.doctors.length);
   assert.doesNotThrow(() => validateClinic({ ...clinic, doctors: withoutPhotos }));
-  assert.ok(withoutPhotos.every((d) => d.photo === undefined));
 });
 
 test("a brand with no logo and no tagline is still valid", () => {
