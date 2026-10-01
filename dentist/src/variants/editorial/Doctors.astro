@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import type { DoctorsSection } from "../data/types.ts";
+import type { DoctorsSection } from "../../data/types.ts";
 
 interface Props {
   doctors: DoctorsSection;
@@ -66,11 +66,13 @@ const { doctors } = Astro.props;
         {/* The text keeps the page's own margin on the outer side, so it stays
             on the same column as every other section while the photo does not. */}
         <div>
-          <blockquote>
-            <p class="font-display text-step italic">{doctor.quote}</p>
-          </blockquote>
+          {doctor.quote && (
+            <blockquote class="mb-7">
+              <p class="font-display text-step italic">{doctor.quote}</p>
+            </blockquote>
+          )}
 
-          <div class="mt-7 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 class="font-medium">{doctor.name}</h3>
             <p class="text-small text-accent">{doctor.role}</p>
           </div>

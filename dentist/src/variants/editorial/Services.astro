@@ -1,0 +1,48 @@
+---
+import type { Services } from "../../data/types.ts";
+
+interface Props {
+  services: Services;
+}
+
+const { services } = Astro.props;
+---
+
+{/*
+  Set like the specialties index — the same rules, the same column split — so
+  a price list reads as part of the page rather than as a pasted-in table.
+  Prices run in the sans with tabular figures: they get compared, so the
+  digits must line up.
+*/}
+<section class="shell py-16 md:py-24">
+  <div class="grid gap-10 md:grid-cols-12 md:gap-8">
+    <div class="md:col-span-4">
+      <h2 class="font-display text-heading">{services.title}</h2>
+      {services.intro && (
+        <p class="mt-4 text-ink-soft">{services.intro}</p>
+      )}
+    </div>
+
+    <div class="md:col-span-8">
+      <dl>
+        {services.items.map((item) => (
+          <div class="flex items-baseline justify-between gap-6 border-t border-line py-4 md:py-5">
+            <dt>
+              <span class="font-display text-step">{item.name}</span>
+              {item.note && (
+                <span class="mt-1 block text-small text-ink-soft">{item.note}</span>
+              )}
+            </dt>
+            {item.price && (
+              <dd class="shrink-0 text-lead tabular-nums text-accent">{item.price}</dd>
+            )}
+          </div>
+        ))}
+        <div class="border-t border-line"></div>
+      </dl>
+      {services.footnote && (
+        <p class="mt-5 text-small text-ink-soft">{services.footnote}</p>
+      )}
+    </div>
+  </div>
+</section>

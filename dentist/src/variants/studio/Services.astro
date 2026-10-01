@@ -1,0 +1,70 @@
+---
+import type { Services } from "../../data/types.ts";
+
+interface Props {
+  services: Services;
+  ctaUrl: string;
+}
+
+const { services, ctaUrl } = Astro.props;
+---
+
+{/*
+  Set as a price list, with leaders running from the name to the price, the
+  way a card is set at a counter. Published prices are rare in this trade; the
+  form says plainly "this is what it costs" instead of dressing it as a
+  pricing table with tiers and checkmarks.
+*/}
+<section class="bg-surface py-20 md:py-28">
+  <div class="shell grid gap-12 md:grid-cols-12 md:gap-8">
+    <div class="md:col-span-5">
+      <h2 class="font-display text-heading">{services.title}</h2>
+      {services.intro && (
+        <p class="measure mt-5 text-lead text-ink-soft">{services.intro}</p>
+      )}
+      <a
+        href={ctaUrl}
+        target="_blank"
+        rel="noopener"
+        class="mt-8 inline-flex min-h-11 items-center text-accent underline underline-offset-4 hover:no-underline"
+      >
+        Preguntar por WhatsApp
+      </a>
+    </div>
+
+    <div class="md:col-span-7">
+      <ul>
+        {services.items.map((item) => (
+          <li class="border-b border-line py-5 first:pt-0 md:py-6">
+            <div class="flex items-baseline gap-4">
+              <h3 class="text-step">{item.name}</h3>
+              {item.price && (
+                <>
+                  <span class="leader min-w-6 flex-1" aria-hidden="true"></span>
+                  <p class="text-step tabular-nums">{item.price}</p>
+                </>
+              )}
+            </div>
+            {item.note && <p class="mt-1 text-small text-ink-soft">{item.note}</p>}
+          </li>
+        ))}
+      </ul>
+      {services.footnote && (
+        <p class="mt-6 text-small text-ink-soft">{services.footnote}</p>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Dotted leaders drawn with a repeating background rather than a dotted
+     border, so the dots are round and evenly spaced at any width. */
+  .leader {
+    height: 1em;
+    background-image: radial-gradient(circle, var(--color-ink-soft) 1px, transparent 1.4px);
+    background-size: 8px 4px;
+    background-repeat: repeat-x;
+    background-position: left bottom 0.28em;
+    opacity: 0.6;
+  }
+</style>

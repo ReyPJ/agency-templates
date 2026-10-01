@@ -1,52 +1,19 @@
 ---
 import Base from "../layouts/Base.astro";
-import Nav from "../components/Nav.astro";
-import Hero from "../components/Hero.astro";
-import Highlights from "../components/Highlights.astro";
-import Method from "../components/Method.astro";
-import Doctors from "../components/Doctors.astro";
-import Specialties from "../components/Specialties.astro";
-import Reviews from "../components/Reviews.astro";
-import Location from "../components/Location.astro";
-import WhatsAppButton from "../components/WhatsAppButton.astro";
+import Editorial from "../variants/editorial/Page.astro";
+import Studio from "../variants/studio/Page.astro";
+import Warm from "../variants/warm/Page.astro";
 import { clinic } from "../data/clinic.ts";
-import { whatsappUrl } from "../data/validate.ts";
+import { resolveVariant } from "../data/validate.ts";
 
-// Optional sections are driven by the presence of their data. There is no
-// branch anywhere on a client's name or slug: dropping a field from
-// clinic.ts is what removes a section.
-const ctaUrl = whatsappUrl(clinic);
+// The variant is the only switch in the whole page. PUBLIC_VARIANT wins over
+// clinic.ts so the three can be shown to a client over the same data:
+//   PUBLIC_VARIANT=studio pnpm dev
+const variant = resolveVariant(clinic, import.meta.env.PUBLIC_VARIANT);
+const pages = { editorial: Editorial, studio: Studio, warm: Warm };
+const Page = pages[variant];
 ---
 
-<Base clinic={clinic}>
-  <Nav clinic={clinic} />
-
-  <main>
-    <Hero hero={clinic.hero} rating={clinic.rating} ctaUrl={ctaUrl} />
-
-    {clinic.highlights && <Highlights highlights={clinic.highlights} />}
-
-    {clinic.method && <Method method={clinic.method} />}
-
-    <Doctors doctors={clinic.doctors} />
-
-    <Specialties specialties={clinic.specialties} />
-
-    {clinic.reviews && (
-      <Reviews reviews={clinic.reviews} rating={clinic.rating} />
-    )}
-
-  </main>
-
-  {/* Always rendered: it carries the page's closing call to action, so it is
-      not conditional on the client having filled in an address. */}
-  <Location
-    location={clinic.location}
-    contact={clinic.contact}
-    brand={clinic.brand}
-    closing={clinic.closing}
-    ctaUrl={ctaUrl}
-  />
-
-  <WhatsAppButton clinic={clinic} />
+<Base clinic={clinic} variant={variant}>
+  <Page clinic={clinic} />
 </Base>

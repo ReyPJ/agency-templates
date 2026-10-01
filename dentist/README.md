@@ -13,6 +13,47 @@ pnpm install
 pnpm dev
 ```
 
+## Variantes
+
+Tres juegos completos de secciones sobre los mismos datos, para que dos
+clínicas con esta plantilla no parezcan el mismo sitio. Se elige con
+`variant` en `clinic.ts`:
+
+| variante | para quién | qué la distingue |
+|---|---|---|
+| `editorial` | clientes sin fotos utilizables | solo tipografía (Instrument Serif + Inter), titular gigante, cero imágenes salvo retratos |
+| `studio` | clínicas con un espacio que vale la pena mostrar | foto a media pantalla en el hero, lista de precios con guías, galería que se revela al hacer scroll, especialidades en acordeón, cierre sobre foto (Jost) |
+| `warm` | consultorios familiares, pediatría, trato cercano | fotos en forma de arco, sello de calificación, la gente primero, mosaico de especialidades, bloques redondeados (Young Serif + Figtree) |
+
+Para enseñarle las tres a un cliente con sus propios datos, sin tocar nada:
+
+```bash
+PUBLIC_VARIANT=studio pnpm dev
+PUBLIC_VARIANT=warm pnpm build
+```
+
+`PUBLIC_VARIANT` gana sobre `clinic.ts`. Un nombre que no existe rompe el build.
+
+Cada variante vive en `src/variants/<nombre>/` y tiene su propio `Page.astro`,
+que decide qué secciones pinta y en qué orden. Lo compartido —contrato, tema,
+layout, validación, barra móvil de WhatsApp— está fuera de esa carpeta. Las
+fuentes y la escala tipográfica de cada variante se redefinen en
+`global.css` sobre `html[data-variant]`, así que los componentes siguen
+nombrando `font-display` y `text-heading` sin saber en qué variante están.
+
+Campos que solo usan algunas variantes (todos opcionales):
+
+| campo | editorial | studio | warm |
+|---|---|---|---|
+| `hero.image` | — | ✓ | ✓ |
+| `gallery` | — | ✓ | ✓ |
+| `doctors.groupPhoto` | — | ✓ | ✓ |
+| `closing.image` | — | ✓ | — |
+| `services` (precios) | ✓ | ✓ | ✓ |
+| `contact.social` | ✓ | ✓ | ✓ |
+
+Fotos de stock para rellenar: `src/assets/stock/` (ver su README).
+
 ## Cómo se adapta a un cliente nuevo
 
 Todo vive en `src/data/clinic.ts`. Los componentes reciben datos y pintan; no
@@ -27,6 +68,7 @@ hay nada que buscar y reemplazar.
 | `brand`, `contact`, `theme`, `seo` | obligatorio |
 | `hero`, `doctors`, `specialties`, `closing` | obligatorio |
 | `rating`, `method`, `reviews`, `location` | opcional |
+| `variant`, `services`, `gallery`, `contact.social` | opcional |
 
 `src/data/validate.ts` corre en build time y **rompe el build** si falta el
 WhatsApp o el teléfono. Es deliberado: vale más un deploy fallido que un sitio
@@ -107,9 +149,13 @@ El procedimiento completo —diagnóstico y corrección de un sitio ya roto— e
 ## Cómo está construido
 
 Sin frameworks de UI, sin directivas `client:*` y **sin JavaScript en el
-bundle**. La única animación —el titular del hero— es CSS, y está envuelta en
+bundle**. Toda animación es CSS y está envuelta en
 `prefers-reduced-motion: no-preference`, de modo que reducir movimiento es el
-estado base.
+estado base. Cada variante tiene un solo momento orquestado al cargar (el
+titular en editorial, la foto que se abre en studio, el arco que sube en
+warm). Las fotos de studio y warm se revelan al entrar en pantalla con
+`animation-timeline: view()`; el navegador que no lo soporta simplemente las
+muestra. El acordeón de studio es `<details name>`, sin script.
 
 Los tests corren con `node:test`, sin framework. `test/image-loader.js` enseña
 a Node qué es un `.jpg`, porque esos imports solo los resuelve el bundler.

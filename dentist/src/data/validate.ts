@@ -1,4 +1,4 @@
-import type { Clinic } from "./types.ts";
+import type { Clinic, Variant } from "./types.ts";
 
 export class InvalidClinic extends Error {
   constructor(field: string, reason: string) {
@@ -45,4 +45,15 @@ export function validateClinic(c: Clinic): Clinic {
  *  this; neither builds the URL on its own. */
 export function whatsappUrl(c: Clinic): string {
   return `https://wa.me/${c.contact.whatsapp}?text=${encodeURIComponent(c.contact.whatsappMessage)}`;
+}
+
+const VARIANTS: Variant[] = ["editorial", "studio", "warm"];
+
+/** The environment override wins, then clinic.ts, then editorial. An unknown
+ *  name breaks the build rather than silently falling back to another look. */
+export function resolveVariant(c: Clinic, override?: string): Variant {
+  const name = override?.trim() || c.variant || "editorial";
+  if (!VARIANTS.includes(name as Variant))
+    throw new InvalidClinic("variant", `must be one of ${VARIANTS.join(", ")} (got "${name}")`);
+  return name as Variant;
 }

@@ -1,0 +1,100 @@
+---
+import { Image } from "astro:assets";
+import type { DoctorsSection } from "../../data/types.ts";
+
+interface Props {
+  doctors: DoctorsSection;
+}
+
+const { doctors } = Astro.props;
+---
+
+{/*
+  The people, side by side, each under the same arch as the hero. Warm leans
+  on the personal note more than any other variant: what a doctor does on a
+  Sunday is what makes a nervous patient picture a person instead of a coat,
+  so it gets its own small heading rather than trailing the duties.
+
+  One doctor centres in a single column; two or more fall into a grid that
+  wraps on its own.
+*/}
+<section class="shell py-20 md:py-28">
+  <div class="mx-auto max-w-[44rem] text-center">
+    <h2 class="font-display text-heading text-balance">{doctors.title}</h2>
+    {doctors.intro && <p class="mt-5 text-lead text-ink-soft">{doctors.intro}</p>}
+  </div>
+
+  {doctors.groupPhoto && (
+    <figure class="mt-12 md:mt-16">
+      <div class="reveal-photo aspect-4/3 overflow-hidden rounded-[32px] md:aspect-21/9">
+        <Image
+          src={doctors.groupPhoto.src}
+          alt={doctors.groupPhoto.alt}
+          widths={[640, 960, 1280, 1600, 2000]}
+          sizes="(min-width: 1360px) 1232px, 100vw"
+          loading="lazy"
+          decoding="async"
+          class="size-full object-cover"
+        />
+      </div>
+      {doctors.groupPhoto.caption && (
+        <figcaption class="mt-3 text-center text-small text-ink-soft">{doctors.groupPhoto.caption}</figcaption>
+      )}
+    </figure>
+  )}
+
+  <ul
+    class:list={[
+      "mx-auto mt-14 grid gap-14 md:mt-20 md:gap-10",
+      doctors.people.length === 1 ? "max-w-[34rem]" : "md:grid-cols-2 lg:gap-16",
+    ]}
+  >
+    {doctors.people.map((doctor) => (
+      <li class="flex flex-col">
+        {doctor.photo && (
+          <div class="arch mb-8 aspect-4/5 w-full max-w-[22rem] overflow-hidden bg-surface">
+            <Image
+              src={doctor.photo.src}
+              alt={doctor.photo.alt}
+              widths={[360, 540, 720]}
+              sizes="352px"
+              loading="lazy"
+              decoding="async"
+              class="size-full object-cover"
+            />
+          </div>
+        )}
+
+        <h3 class="font-display text-step">{doctor.name}</h3>
+        <p class="mt-1 font-semibold text-accent">{doctor.role}</p>
+
+        {doctor.quote && (
+          <blockquote class="mt-5">
+            <p class="text-lead">“{doctor.quote}”</p>
+          </blockquote>
+        )}
+
+        <p class="mt-4 text-ink-soft">{doctor.duties}</p>
+
+        {doctor.personalNote && (
+          <div class="mt-6 rounded-[20px] bg-surface px-6 py-5">
+            <p class="text-small font-semibold">Fuera del consultorio</p>
+            <p class="mt-1 text-ink-soft">{doctor.personalNote}</p>
+          </div>
+        )}
+
+        {doctor.license && (
+          <p class="mt-4 text-small text-ink-soft">
+            Cédula profesional <span class="tabular-nums">{doctor.license}</span>
+          </p>
+        )}
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .arch {
+    border-radius: 999px 999px 24px 24px;
+  }
+</style>

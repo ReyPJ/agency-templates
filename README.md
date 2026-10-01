@@ -6,7 +6,7 @@ queda un sitio de cliente.
 
 | plantilla | rubro | estado |
 |---|---|---|
-| [`dentist/`](dentist/) | Clínicas dentales | En uso |
+| [`dentist/`](dentist/) | Clínicas dentales | En uso · 3 variantes (`editorial`, `studio`, `warm`) |
 
 ## Crear un sitio de cliente
 

@@ -1,0 +1,42 @@
+---
+import type { SpecialtiesSection } from "../../data/types.ts";
+
+interface Props {
+  specialties: SpecialtiesSection;
+}
+
+const { specialties } = Astro.props;
+---
+
+{/*
+  Soft tiles in a masonry flow. Descriptions differ in length, so a column
+  layout lets each tile take the height its text needs instead of forcing a
+  grid of equal boxes with ragged empty bottoms.
+
+  The tiles alternate between the page's two grounds, which keeps a long list
+  from reading as one block without resorting to icons.
+*/}
+<section class="py-20 md:py-28">
+  <div class="shell">
+    <div class="grid gap-6 md:grid-cols-12 md:items-end md:gap-8">
+      <h2 class="font-display text-heading md:col-span-5">{specialties.title}</h2>
+      {specialties.intro && (
+        <p class="measure text-lead text-ink-soft md:col-span-6 md:col-start-7">{specialties.intro}</p>
+      )}
+    </div>
+
+    <ul class="mt-12 gap-5 sm:columns-2 md:mt-16 lg:columns-3">
+      {specialties.items.map((specialty, index) => (
+        <li
+          class:list={[
+            "mb-5 break-inside-avoid rounded-[28px] p-7 md:p-8",
+            index % 3 === 1 ? "bg-accent text-accent-ink" : "bg-surface",
+          ]}
+        >
+          <h3 class="font-display text-step">{specialty.name}</h3>
+          <p class:list={["mt-3", index % 3 === 1 ? "opacity-85" : "text-ink-soft"]}>{specialty.solves}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

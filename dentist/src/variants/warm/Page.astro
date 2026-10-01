@@ -1,0 +1,55 @@
+---
+import type { Clinic } from "../../data/types.ts";
+import { whatsappUrl } from "../../data/validate.ts";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import Nav from "./Nav.astro";
+import Hero from "./Hero.astro";
+import Highlights from "./Highlights.astro";
+import Doctors from "./Doctors.astro";
+import Method from "./Method.astro";
+import Specialties from "./Specialties.astro";
+import Services from "./Services.astro";
+import Gallery from "./Gallery.astro";
+import Reviews from "./Reviews.astro";
+import Location from "./Location.astro";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+const ctaUrl = whatsappUrl(clinic);
+
+// Warm puts the people first: who you will meet comes right after the hero,
+// and the space comes late, as a reassurance rather than the pitch.
+---
+
+<Nav clinic={clinic} />
+
+<main>
+  <Hero hero={clinic.hero} rating={clinic.rating} ctaUrl={ctaUrl} />
+
+  {clinic.highlights && <Highlights highlights={clinic.highlights} />}
+
+  <Doctors doctors={clinic.doctors} />
+
+  {clinic.method && <Method method={clinic.method} />}
+
+  <Specialties specialties={clinic.specialties} />
+
+  {clinic.services && <Services services={clinic.services} ctaUrl={ctaUrl} />}
+
+  {clinic.reviews && <Reviews reviews={clinic.reviews} rating={clinic.rating} />}
+
+  {clinic.gallery && <Gallery gallery={clinic.gallery} />}
+</main>
+
+<Location
+  location={clinic.location}
+  contact={clinic.contact}
+  brand={clinic.brand}
+  closing={clinic.closing}
+  ctaUrl={ctaUrl}
+/>
+
+<WhatsAppButton clinic={clinic} />

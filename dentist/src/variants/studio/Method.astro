@@ -1,0 +1,67 @@
+---
+import type { Method } from "../../data/types.ts";
+
+interface Props {
+  method: Method;
+}
+
+const { method } = Astro.props;
+---
+
+{/*
+  A real sequence, so it is drawn as one: a single line runs through the steps
+  and each step hangs from a mark on it. On the dark block, so the page has
+  one change of key between the photographs.
+*/}
+<section class="bg-inverted-background py-20 text-inverted-ink md:py-28">
+  <div class="shell">
+    <h2 class="measure font-display text-heading">{method.title}</h2>
+    {method.intro && (
+      <p class="measure mt-5 text-lead text-inverted-ink-soft">{method.intro}</p>
+    )}
+
+    <ol class="steps mt-14 grid gap-10 md:mt-20 md:grid-cols-3 md:gap-8">
+      {method.steps.map((step) => (
+        <li class="step relative pl-8 md:pl-0 md:pt-10">
+          <h3 class="text-step">{step.label}</h3>
+          <p class="mt-3 text-inverted-ink-soft">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    position: relative;
+  }
+  /* The line itself: vertical on a phone, horizontal from tablet up. */
+  .steps::before {
+    content: "";
+    position: absolute;
+    inset: 6px auto 6px 5px;
+    width: 1px;
+    background-color: var(--color-inverted-ink-soft);
+    opacity: 0.5;
+  }
+  .step::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 11px;
+    height: 11px;
+    border-radius: 999px;
+    background-color: var(--color-accent-light);
+  }
+  @media (min-width: 768px) {
+    .steps::before {
+      inset: 5px 0 auto 0;
+      width: auto;
+      height: 1px;
+    }
+    .step::before {
+      top: 0;
+    }
+  }
+</style>

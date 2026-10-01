@@ -5,6 +5,7 @@
 @source "../components";
 @source "../layouts";
 @source "../pages";
+@source "../variants";
 
 /* Self-hosted: no request to a third party, and the display face is the LCP
    element, so it cannot wait on someone else's DNS. */
@@ -28,6 +29,30 @@
   font-weight: 400 600;
   font-display: swap;
   src: url("/fonts/inter.woff2") format("woff2");
+}
+
+/* Studio and warm faces. A face that is declared but never painted is never
+   downloaded, so carrying all three variants costs the visitor nothing. */
+@font-face {
+  font-family: "Jost";
+  font-style: normal;
+  font-weight: 300 600;
+  font-display: swap;
+  src: url("/fonts/jost.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Young Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/young-serif.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/figtree.woff2") format("woff2");
 }
 
 @theme {
@@ -84,7 +109,50 @@
   --text-small--line-height: 1.5;
 }
 
+/* Each variant re-voices the same tokens. Components keep naming
+   font-display and text-heading; what those mean changes here, on the root,
+   so no component has to know which variant it is in. */
 @layer base {
+  html[data-variant="studio"] {
+    /* One geometric family throughout. Its light weight at display size is
+       what reads as architectural: thin strokes, a lot of air inside them. */
+    --font-display: "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+    --font-body: "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+
+    --text-display: clamp(2.875rem, 1.1rem + 6.2vw, 7.25rem);
+    --text-display--line-height: 0.98;
+    --text-display--letter-spacing: -0.03em;
+
+    --text-heading: clamp(2rem, 1.25rem + 2.6vw, 3.625rem);
+    --text-heading--line-height: 1.02;
+    --text-heading--letter-spacing: -0.025em;
+
+    --text-step: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
+    --text-step--line-height: 1.15;
+    --text-step--letter-spacing: -0.012em;
+
+    --text-body: 1.0625rem;
+    --text-body--line-height: 1.6;
+  }
+
+  html[data-variant="warm"] {
+    /* A soft, round-shouldered serif over a friendly grotesque. The serif is
+       never italic here — warmth comes from its shapes, not from slant. */
+    --font-display: "Young Serif", "Iowan Old Style", Georgia, serif;
+    --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    --text-display: clamp(2.625rem, 1.3rem + 5vw, 5.75rem);
+    --text-display--line-height: 1.04;
+    --text-display--letter-spacing: -0.02em;
+
+    --text-heading: clamp(1.875rem, 1.3rem + 2.2vw, 3.125rem);
+    --text-heading--line-height: 1.1;
+    --text-heading--letter-spacing: -0.015em;
+
+    --text-step: clamp(1.375rem, 1.15rem + 0.9vw, 1.75rem);
+    --text-step--line-height: 1.2;
+  }
+
   html {
     background-color: var(--color-background);
     color: var(--color-ink);
@@ -95,7 +163,11 @@
     font-family: var(--font-body);
     font-size: var(--text-body);
     line-height: var(--text-body--line-height);
-    /* Inter's defaults leave numerals looking loose next to the serif. */
+  }
+
+  /* Inter's defaults leave numerals looking loose next to the serif. Scoped:
+     the same feature tags select unrelated alternates in other faces. */
+  html[data-variant="editorial"] body {
     font-feature-settings: "cv05" 1, "ss01" 1;
   }
 
@@ -177,4 +249,34 @@
   @media (min-width: 1280px) {
     padding-inline: 64px;
   }
+}
+
+/* Scroll-linked reveal for photographs, with no JavaScript: the browser ties
+   the animation to the element's own trip through the viewport. Browsers
+   without scroll timelines, and anyone who asked for less motion, simply see
+   the image — the reveal is added on top of a finished state, never required
+   to reach it. Used on pictures only; text that animates on every scroll is
+   the generic default and reads as such. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal-photo {
+      animation: reveal-photo linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 32%;
+    }
+    .reveal-photo > img {
+      animation: reveal-photo-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 50%;
+    }
+  }
+}
+
+@keyframes reveal-photo {
+  from { clip-path: inset(22% 0 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes reveal-photo-settle {
+  from { transform: scale(1.12); }
+  to { transform: scale(1); }
 }

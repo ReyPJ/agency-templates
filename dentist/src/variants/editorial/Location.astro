@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import type { Brand, Closing, Contact, Location } from "../data/types.ts";
-import WhatsAppIcon from "./icons/WhatsAppIcon.astro";
+import type { Brand, Closing, Contact, Location } from "../../data/types.ts";
+import WhatsAppIcon from "../../components/icons/WhatsAppIcon.astro";
 
 interface Props {
   location?: Location;
@@ -154,6 +154,16 @@ const hasPracticalInfo = Boolean(
           <p>
             {brand.registration.label}{" "}
             <span class="tabular-nums">{brand.registration.value}</span>
+          </p>
+        )}
+        {contact.social?.instagram && (
+          <p>
+            <a href={contact.social.instagram} target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-ink">Instagram</a>
+          </p>
+        )}
+        {contact.social?.facebook && (
+          <p>
+            <a href={contact.social.facebook} target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-ink">Facebook</a>
           </p>
         )}
         <p class="tabular-nums">© {year} {brand.name}</p>

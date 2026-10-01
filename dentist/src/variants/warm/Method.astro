@@ -1,0 +1,48 @@
+---
+import type { Method } from "../../data/types.ts";
+
+interface Props {
+  method: Method;
+}
+
+const { method } = Astro.props;
+---
+
+{/*
+  A path walked in order, so it is drawn as one: numbered stops down a dotted
+  line. The numbers are honest — these steps really happen one after another.
+*/}
+<section class="shell py-20 md:py-28">
+  <div class="grid gap-12 rounded-[40px] bg-inverted-background p-8 text-inverted-ink md:grid-cols-12 md:gap-8 md:p-14">
+    <div class="md:col-span-5">
+      <h2 class="font-display text-heading">{method.title}</h2>
+      {method.intro && <p class="mt-5 text-lead text-inverted-ink-soft">{method.intro}</p>}
+    </div>
+
+    <ol class="path grid gap-10 md:col-span-6 md:col-start-7">
+      {method.steps.map((step, index) => (
+        <li class="relative grid grid-cols-[48px_1fr] gap-5">
+          <span class="relative z-10 grid size-12 place-content-center rounded-full bg-accent-light font-display text-lead text-ink" aria-hidden="true">
+            {index + 1}
+          </span>
+          <div class="pt-2">
+            <h3 class="font-display text-step">{step.label}</h3>
+            <p class="mt-2 text-inverted-ink-soft">{step.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .path > li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 23px;
+    top: 48px;
+    bottom: -40px;
+    border-left: 2px dotted var(--color-inverted-ink-soft);
+    opacity: 0.6;
+  }
+</style>

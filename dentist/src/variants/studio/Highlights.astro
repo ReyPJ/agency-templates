@@ -1,0 +1,24 @@
+---
+import type { Highlight } from "../../data/types.ts";
+
+interface Props {
+  highlights: Highlight[];
+}
+
+const { highlights } = Astro.props;
+---
+
+{/*
+  One quiet line of facts under the hero, numbers in the same light weight as
+  the headline. It is a caption to the first screen, not a second hero.
+*/}
+<section class="border-y border-line">
+  <dl class="shell grid gap-6 py-8 sm:grid-cols-3 sm:gap-8 md:py-10">
+    {highlights.map((item) => (
+      <div class="flex items-baseline gap-4">
+        <dt class="text-heading font-light tabular-nums">{item.value}</dt>
+        <dd class="max-w-[24ch] text-small text-ink-soft">{item.label}</dd>
+      </div>
+    ))}
+  </dl>
+</section>

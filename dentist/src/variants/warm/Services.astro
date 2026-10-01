@@ -1,0 +1,48 @@
+---
+import type { Services } from "../../data/types.ts";
+
+interface Props {
+  services: Services;
+  ctaUrl: string;
+}
+
+const { services, ctaUrl } = Astro.props;
+---
+
+{/*
+  Prices on one rounded slip, like the card a receptionist hands across the
+  counter. Clear, short, and ending in the way to book.
+*/}
+<section class="shell py-20 md:py-28">
+  <div class="grid gap-10 rounded-[40px] bg-surface p-8 md:grid-cols-12 md:gap-8 md:p-14">
+    <div class="md:col-span-5">
+      <h2 class="font-display text-heading">{services.title}</h2>
+      {services.intro && <p class="mt-5 text-lead text-ink-soft">{services.intro}</p>}
+      <a
+        href={ctaUrl}
+        target="_blank"
+        rel="noopener"
+        class="mt-8 inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-ink px-7 font-semibold text-background transition-opacity hover:opacity-90"
+      >
+        Agendar por WhatsApp
+      </a>
+    </div>
+
+    <div class="md:col-span-7">
+      <ul class="grid gap-3">
+        {services.items.map((item) => (
+          <li class="flex items-center justify-between gap-6 rounded-[20px] bg-background px-6 py-5">
+            <div>
+              <h3 class="font-semibold">{item.name}</h3>
+              {item.note && <p class="mt-1 text-small text-ink-soft">{item.note}</p>}
+            </div>
+            {item.price && (
+              <p class="shrink-0 font-display text-step tabular-nums text-accent">{item.price}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+      {services.footnote && <p class="mt-5 text-small text-ink-soft">{services.footnote}</p>}
+    </div>
+  </div>
+</section>

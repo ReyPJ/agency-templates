@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+import type { Gallery } from "../../data/types.ts";
+
+interface Props {
+  gallery: Gallery;
+}
+
+const { gallery } = Astro.props;
+---
+
+{/*
+  The space, at the size a space deserves. On a phone it is a strip you swipe
+  through — scroll-snap, no script — because stacking four photos one under
+  another turns the section into a very long wait. On desktop it is an
+  asymmetric spread: one picture leads, the rest follow at a smaller size,
+  which reads as an edit rather than as a grid of thumbnails.
+
+  Each picture reveals as it scrolls into view; see .reveal-photo in
+  global.css for why that is safe to add.
+*/}
+<section class="py-20 md:py-28">
+  <div class="shell grid gap-6 md:grid-cols-12 md:items-end md:gap-8">
+    <h2 class="font-display text-heading md:col-span-6">{gallery.title}</h2>
+    {gallery.intro && (
+      <p class="measure text-lead text-ink-soft md:col-span-5 md:col-start-8">{gallery.intro}</p>
+    )}
+  </div>
+
+  <ul class="gallery shell mt-12 md:mt-16">
+    {gallery.photos.map((photo, index) => (
+      <li class:list={["gallery-item", index === 0 && "gallery-lead"]}>
+        <figure>
+          <div class="reveal-photo overflow-hidden">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              widths={index === 0 ? [640, 960, 1280, 1600] : [480, 720, 960]}
+              sizes={index === 0 ? "(min-width: 768px) 58vw, 85vw" : "(min-width: 768px) 40vw, 85vw"}
+              loading="lazy"
+              decoding="async"
+              class="size-full object-cover"
+            />
+          </div>
+          {photo.caption && (
+            <figcaption class="mt-3 text-small text-ink-soft">{photo.caption}</figcaption>
+          )}
+        </figure>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    /* Lets the strip run to the screen edge while its first item still lines
+       up with the page's column. */
+    scroll-padding-inline: 24px;
+  }
+  .gallery::-webkit-scrollbar {
+    display: none;
+  }
+  .gallery-item {
+    scroll-snap-align: start;
+  }
+  .gallery-item .reveal-photo {
+    aspect-ratio: 4 / 5;
+  }
+
+  @media (min-width: 768px) {
+    .gallery {
+      grid-auto-flow: row dense;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 32px;
+      overflow: visible;
+    }
+    /* The lead runs the full height of the next three, which stack beside
+       it; anything past the fourth continues below in pairs. */
+    .gallery-lead {
+      grid-column: 1 / span 7;
+      grid-row: span 3;
+    }
+    .gallery-lead figure {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .gallery-lead .reveal-photo {
+      aspect-ratio: auto;
+      position: relative;
+      flex: 1;
+      min-height: 0;
+    }
+    .gallery-lead img {
+      position: absolute;
+      inset: 0;
+    }
+    .gallery-item:nth-child(-n + 4):not(.gallery-lead) {
+      grid-column: 8 / span 5;
+    }
+    .gallery-item:not(.gallery-lead) .reveal-photo {
+      aspect-ratio: 16 / 10;
+    }
+    .gallery-item:nth-child(n + 5) {
+      grid-column: span 6;
+    }
+  }
+</style>

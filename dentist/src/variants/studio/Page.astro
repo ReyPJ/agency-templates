@@ -1,0 +1,57 @@
+---
+import type { Clinic } from "../../data/types.ts";
+import { whatsappUrl } from "../../data/validate.ts";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import Nav from "./Nav.astro";
+import Hero from "./Hero.astro";
+import Highlights from "./Highlights.astro";
+import Services from "./Services.astro";
+import Gallery from "./Gallery.astro";
+import Doctors from "./Doctors.astro";
+import Specialties from "./Specialties.astro";
+import Method from "./Method.astro";
+import Reviews from "./Reviews.astro";
+import Location from "./Location.astro";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+const ctaUrl = whatsappUrl(clinic);
+
+// Studio leads with the space and with what things cost — the two things a
+// photo-rich clinic with published prices has over its neighbours — and
+// leaves the specialties, which every clinic lists, for later.
+---
+
+<Nav clinic={clinic} />
+
+<main>
+  <Hero hero={clinic.hero} rating={clinic.rating} ctaUrl={ctaUrl} />
+
+  {clinic.highlights && <Highlights highlights={clinic.highlights} />}
+
+  {clinic.services && <Services services={clinic.services} ctaUrl={ctaUrl} />}
+
+  {clinic.gallery && <Gallery gallery={clinic.gallery} />}
+
+  <Doctors doctors={clinic.doctors} />
+
+  {clinic.method && <Method method={clinic.method} />}
+
+  <Specialties specialties={clinic.specialties} />
+
+  {clinic.reviews && <Reviews reviews={clinic.reviews} rating={clinic.rating} />}
+</main>
+
+<Location
+  location={clinic.location}
+  contact={clinic.contact}
+  brand={clinic.brand}
+  closing={clinic.closing}
+  ctaUrl={ctaUrl}
+  fallbackImage={clinic.gallery?.photos.at(-1) ?? clinic.hero.image}
+/>
+
+<WhatsAppButton clinic={clinic} />

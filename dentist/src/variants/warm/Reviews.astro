@@ -1,0 +1,55 @@
+---
+import type { Rating, Reviews } from "../../data/types.ts";
+
+interface Props {
+  reviews: Reviews;
+  rating?: Rating;
+}
+
+const { reviews, rating } = Astro.props;
+const [lead, ...rest] = reviews.themes;
+---
+
+{/*
+  What patients say, said once and large, centred like a toast. The rest of
+  the themes follow as quieter lines, and verbatim quotes, when the client
+  hands them over, sit beneath in soft speech-shaped blocks.
+*/}
+<section class="shell py-20 text-center md:py-28">
+  <h2 class="text-small font-semibold text-accent">{reviews.title}</h2>
+
+  {lead && (
+    <p class="mx-auto mt-6 max-w-[22ch] font-display text-heading text-balance">{lead}</p>
+  )}
+
+  {rating && (
+    <p class="mt-8 text-ink-soft">
+      <span class="font-semibold tabular-nums text-ink">{rating.score} de 5</span> en
+      {" "}<span class="tabular-nums">{rating.count}</span> reseñas de {rating.source}
+    </p>
+  )}
+
+  {rest.length > 0 && (
+    <ul class="mx-auto mt-12 grid max-w-[56rem] gap-4 md:grid-cols-2">
+      {rest.map((theme) => (
+        <li class="rounded-[24px] bg-surface px-7 py-6 text-left text-lead">{theme}</li>
+      ))}
+    </ul>
+  )}
+
+  {reviews.quotes && reviews.quotes.length > 0 && (
+    <ul class="mx-auto mt-4 grid max-w-[56rem] gap-4 md:grid-cols-2">
+      {reviews.quotes.map((quote) => (
+        <li class="rounded-[24px] rounded-bl-[6px] bg-surface px-7 py-6 text-left">
+          <blockquote>
+            <p class="text-lead">“{quote.text}”</p>
+          </blockquote>
+          <p class="mt-3 text-small text-ink-soft">
+            <cite class="not-italic">{quote.author}</cite>
+            {quote.date && <span>, {quote.date}</span>}
+          </p>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>

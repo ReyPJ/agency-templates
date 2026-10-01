@@ -1,0 +1,39 @@
+---
+import type { Clinic } from "../../data/types.ts";
+import { whatsappUrl } from "../../data/validate.ts";
+import WhatsAppIcon from "../../components/icons/WhatsAppIcon.astro";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+const { brand, contact } = clinic;
+---
+
+<header class="absolute inset-x-0 top-0 z-10">
+  <nav aria-label="Principal" class="shell flex items-center justify-between py-6 md:py-8">
+    <a href="/" aria-label={`${brand.name} — inicio`} class="font-display text-lead text-ink">
+      {brand.name}
+    </a>
+
+    <ul class="flex items-center gap-5">
+      <li class="hidden sm:block">
+        <a href={`tel:${contact.phone}`} class="text-small tabular-nums text-ink-soft transition-colors hover:text-ink">
+          {contact.phoneDisplay}
+        </a>
+      </li>
+      <li>
+        <a
+          href={whatsappUrl(clinic)}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 text-small font-semibold text-accent-ink transition-opacity hover:opacity-90"
+        >
+          <WhatsAppIcon class="size-[18px]" />
+          <span>WhatsApp</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>

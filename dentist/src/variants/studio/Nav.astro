@@ -1,0 +1,51 @@
+---
+import type { Clinic } from "../../data/types.ts";
+import { whatsappUrl } from "../../data/validate.ts";
+import WhatsAppIcon from "../../components/icons/WhatsAppIcon.astro";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+const { brand, contact } = clinic;
+---
+
+{/*
+  Sits over the hero's light column. On desktop the photo occupies the right
+  half, so the actions carry their own background there: a pill that stays
+  legible over any picture instead of white text gambling on the image.
+*/}
+<header class="absolute inset-x-0 top-0 z-10">
+  <nav aria-label="Principal" class="shell flex items-center justify-between py-6 md:py-8">
+    <a
+      href="/"
+      aria-label={`${brand.name} — inicio`}
+      class="text-lead font-medium tracking-tight text-ink"
+    >
+      {brand.name}
+    </a>
+
+    <ul class="flex items-center gap-2">
+      <li class="hidden sm:block">
+        <a
+          href={`tel:${contact.phone}`}
+          class="inline-flex min-h-11 items-center rounded-full bg-background px-5 text-small tabular-nums text-ink transition-colors hover:text-accent"
+        >
+          {contact.phoneDisplay}
+        </a>
+      </li>
+      <li>
+        <a
+          href={whatsappUrl(clinic)}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-small font-medium text-background transition-opacity hover:opacity-85"
+        >
+          <WhatsAppIcon class="size-[18px]" />
+          <span>WhatsApp</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>

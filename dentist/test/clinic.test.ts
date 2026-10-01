@@ -22,7 +22,7 @@ test("every specialty says what it solves, in plain language", () => {
 test("both doctors carry a quote and a personal note", () => {
   assert.equal(clinic.doctors.people.length, 2);
   for (const d of clinic.doctors.people) {
-    assert.ok(d.quote.length > 40, `${d.name} has no quote`);
+    assert.ok((d.quote ?? "").length > 40, `${d.name} has no quote`);
     assert.ok(d.personalNote, `${d.name} has no personal note`);
   }
 });

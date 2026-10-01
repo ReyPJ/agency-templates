@@ -1,0 +1,125 @@
+---
+import { Image } from "astro:assets";
+import type { Hero, Rating } from "../../data/types.ts";
+
+interface Props {
+  hero: Hero;
+  rating?: Rating;
+  ctaUrl: string;
+}
+
+const { hero, rating, ctaUrl } = Astro.props;
+---
+
+{/*
+  Split screen: the words on the page's own ground, the clinic's space on the
+  right, bled to the edge and to the full height of the screen. The picture is
+  the claim — a visitor sees where they would sit before reading a line.
+
+  Without a photograph the text simply takes the whole width, so a client with
+  no images still gets a finished hero instead of a hole.
+
+  The load sequence is the page's one orchestrated moment: the photo opens
+  upward like a blind while the headline rises line by line.
+*/}
+<section
+  class:list={[
+    "studio-hero grid lg:min-h-svh",
+    hero.image && "lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]",
+  ]}
+>
+  <div class="hero-copy flex flex-col justify-end pt-32 pb-12 md:pt-40 md:pb-16">
+    <h1 class="font-display text-display font-light">
+      {hero.headline.map((line) => <span class="hero-line block">{line}</span>)}
+    </h1>
+
+    <p class="measure mt-8 text-lead text-ink-soft md:mt-10">{hero.subhead}</p>
+
+    <div class="mt-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center md:mt-12">
+      <a
+        href={ctaUrl}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex min-h-12 w-full items-center justify-center whitespace-nowrap rounded-full bg-accent px-8 py-4 font-medium text-accent-ink transition-opacity hover:opacity-90 sm:w-auto"
+      >
+        {hero.cta}
+      </a>
+
+      {rating && (
+        <p class="text-small text-ink-soft">
+          <strong class="font-medium tabular-nums text-ink">{rating.score}</strong> de 5
+          en <span class="tabular-nums">{rating.count}</span> reseñas de {rating.source}
+        </p>
+      )}
+    </div>
+  </div>
+
+  {hero.image && (
+    <figure class="hero-figure relative h-[62svh] overflow-hidden md:h-[70svh] lg:h-auto">
+      <Image
+        src={hero.image.src}
+        alt={hero.image.alt}
+        widths={[640, 960, 1280, 1600, 2000]}
+        sizes="(min-width: 1024px) 42vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img absolute inset-0 size-full object-cover"
+      />
+      {hero.image.caption && (
+        <figcaption class="absolute bottom-0 left-0 bg-background px-4 py-3 text-small text-ink-soft">
+          {hero.image.caption}
+        </figcaption>
+      )}
+    </figure>
+  )}
+</section>
+
+<style>
+  /* The copy column keeps the page's outer margin on its left edge, so the
+     headline lines up with every section below while the photo runs off the
+     right of the screen. */
+  .hero-copy {
+    padding-inline: 24px;
+  }
+  @media (min-width: 768px) {
+    .hero-copy {
+      padding-inline: 48px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .hero-copy {
+      padding-inline-start: max(64px, calc(50vw - 680px + 64px));
+      padding-inline-end: 64px;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-line {
+      animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    }
+    .hero-line:nth-child(1) { animation-delay: 0.25s; }
+    .hero-line:nth-child(2) { animation-delay: 0.35s; }
+    .hero-line:nth-child(3) { animation-delay: 0.45s; }
+    .hero-line:nth-child(4) { animation-delay: 0.55s; }
+
+    .hero-figure {
+      animation: open 1.2s cubic-bezier(0.7, 0, 0.2, 1) backwards;
+    }
+    /* The image settles while the blind opens, so the reveal reads as a
+       camera coming to rest rather than a rectangle being wiped in. */
+    .hero-img {
+      animation: settle 2.2s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(0.4em); }
+    }
+    @keyframes open {
+      from { clip-path: inset(100% 0 0 0); }
+      to { clip-path: inset(0 0 0 0); }
+    }
+    @keyframes settle {
+      from { transform: scale(1.14); }
+    }
+  }
+</style>

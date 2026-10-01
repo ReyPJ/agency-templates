@@ -3,6 +3,13 @@ import { validateClinic } from "./validate.ts";
 import logo from "../assets/axxlogo.jpg";
 import alexander from "../assets/doctores/alexander.jpg";
 import ximena from "../assets/doctores/ximena.jpg";
+// Stock photography for the studio and warm variants. Editorial paints none of
+// it. Replace with the clinic's own pictures whenever there are any.
+import modeloDiente from "../assets/stock/modelo-diente.jpg";
+import escaneo from "../assets/stock/escaneo-3d.jpg";
+import consulta from "../assets/stock/consulta.jpg";
+import instrumental from "../assets/stock/instrumental.jpg";
+import salaLuz from "../assets/stock/sala-luz.jpg";
 
 // Everything that changes between clients lives in this file. Components never
 // name a client, so a new one is resolved here and nowhere else.
@@ -49,6 +56,18 @@ const data: Clinic = {
     headline: ["Antes de tocar", "un diente,", "escuchamos."],
     subhead: "Clínica dental de especialidades en Ciudad Satélite, Naucalpan.",
     cta: "Agendar valoración",
+    image: { src: salaLuz, alt: "Paciente esperando en una sala luminosa con un muro de mármol" },
+  },
+
+  gallery: {
+    title: "Cómo trabajamos",
+    intro: "Estudio 3D, radiografía digital y tiempo para explicarte lo que vemos.",
+    photos: [
+      { src: escaneo, alt: "Doctora revisando un escaneo dental 3D en una tableta", caption: "Diagnóstico con estudio 3D" },
+      { src: consulta, alt: "Dentista conversando con una paciente en el consultorio", caption: "La primera cita es una conversación" },
+      { src: instrumental, alt: "Instrumental dental esterilizado sobre una superficie gris", caption: "Instrumental esterilizado en cada cita" },
+      { src: modeloDiente, alt: "Doctora mostrando un modelo de diente con las capas internas", caption: "Te explicamos con modelos, no con tecnicismos" },
+    ],
   },
 
   rating: {

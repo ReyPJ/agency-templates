@@ -1,0 +1,58 @@
+---
+import type { Clinic } from "../../data/types.ts";
+import { whatsappUrl } from "../../data/validate.ts";
+import WhatsAppButton from "../../components/WhatsAppButton.astro";
+import Nav from "./Nav.astro";
+import Hero from "./Hero.astro";
+import Highlights from "./Highlights.astro";
+import Method from "./Method.astro";
+import Doctors from "./Doctors.astro";
+import Specialties from "./Specialties.astro";
+import Services from "./Services.astro";
+import Reviews from "./Reviews.astro";
+import Location from "./Location.astro";
+
+interface Props {
+  clinic: Clinic;
+}
+
+const { clinic } = Astro.props;
+
+// Optional sections are driven by the presence of their data. There is no
+// branch anywhere on a client's name or slug: dropping a field from
+// clinic.ts is what removes a section. Editorial is type-only, so it never
+// paints hero.image, gallery or groupPhoto.
+const ctaUrl = whatsappUrl(clinic);
+---
+
+<Nav clinic={clinic} />
+
+<main>
+  <Hero hero={clinic.hero} rating={clinic.rating} ctaUrl={ctaUrl} />
+
+  {clinic.highlights && <Highlights highlights={clinic.highlights} />}
+
+  {clinic.method && <Method method={clinic.method} />}
+
+  <Doctors doctors={clinic.doctors} />
+
+  <Specialties specialties={clinic.specialties} />
+
+  {clinic.services && <Services services={clinic.services} />}
+
+  {clinic.reviews && (
+    <Reviews reviews={clinic.reviews} rating={clinic.rating} />
+  )}
+</main>
+
+{/* Always rendered: it carries the page's closing call to action, so it is
+    not conditional on the client having filled in an address. */}
+<Location
+  location={clinic.location}
+  contact={clinic.contact}
+  brand={clinic.brand}
+  closing={clinic.closing}
+  ctaUrl={ctaUrl}
+/>
+
+<WhatsAppButton clinic={clinic} />

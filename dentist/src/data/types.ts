@@ -21,6 +21,19 @@ export interface Image {
   alt: string;
 }
 
+/** A photograph that carries a short line under it. Captions say what the
+ *  picture is — "Recepción" — never a slogan. */
+export interface Photo extends Image {
+  caption?: string;
+}
+
+/** Each variant is a complete set of sections built over the same data, so
+ *  two clinics on the same template do not look like the same site.
+ *  - editorial: type-led, no photography. For clients with no usable images.
+ *  - studio: photo-led and architectural. For clinics with a space worth showing.
+ *  - warm: soft and close, family-oriented. Arched photography, rounder shapes. */
+export type Variant = "editorial" | "studio" | "warm";
+
 export interface Brand {
   name: string;
   kind: string;
@@ -39,6 +52,8 @@ export interface Contact {
   /** E.164. */
   phone: string;
   phoneDisplay: string;
+  /** Full profile URLs. Linked in the footer and emitted as schema.org sameAs. */
+  social?: { instagram?: string; facebook?: string };
 }
 
 export interface Hero {
@@ -46,6 +61,8 @@ export interface Hero {
   headline: string[];
   subhead: string;
   cta: string;
+  /** Used by studio and warm. Editorial is type-only and ignores it. */
+  image?: Photo;
 }
 
 export interface Rating {
@@ -71,7 +88,9 @@ export interface Doctor {
   name: string;
   role: string;
   duties: string;
-  quote: string;
+  /** Only the doctor's own words. Never write one for them: without a real
+   *  quote the variants lead with the duties instead. */
+  quote?: string;
   personalNote?: string;
   license?: string;
   photo?: Image;
@@ -89,12 +108,40 @@ export interface DoctorsSection {
   title: string;
   intro?: string;
   people: Doctor[];
+  /** The whole team in one frame. Used by studio and warm. */
+  groupPhoto?: Photo;
 }
 
 export interface SpecialtiesSection {
   title: string;
   intro?: string;
   items: Specialty[];
+}
+
+/** Published prices. Many clinics quote none, so the whole block is optional;
+ *  when present it is one of the strongest reasons to write rather than to
+ *  keep searching, because almost no competitor shows them. */
+export interface Service {
+  name: string;
+  /** As the visitor should read it, currency included: "$1,100". */
+  price?: string;
+  /** "Varias sesiones", "Incluye diagnóstico"… */
+  note?: string;
+}
+
+export interface Services {
+  title: string;
+  intro?: string;
+  items: Service[];
+  /** Fine print under the list, e.g. what a price does or does not include. */
+  footnote?: string;
+}
+
+/** The clinic's own space. Used by studio and warm; editorial ignores it. */
+export interface Gallery {
+  title: string;
+  intro?: string;
+  photos: Photo[];
 }
 
 export interface Review {
@@ -128,6 +175,8 @@ export interface Highlight {
 export interface Closing {
   headline: string;
   cta: string;
+  /** Background photograph for the studio close. */
+  image?: Photo;
 }
 
 export interface Location {
@@ -142,6 +191,9 @@ export interface Location {
 }
 
 export interface Clinic {
+  /** Defaults to editorial. PUBLIC_VARIANT in the environment overrides it,
+   *  which is how the three variants are previewed over the same data. */
+  variant?: Variant;
   brand: Brand;
   contact: Contact;
   theme: Theme;
@@ -157,4 +209,6 @@ export interface Clinic {
   method?: Method;
   reviews?: Reviews;
   location?: Location;
+  services?: Services;
+  gallery?: Gallery;
 }
