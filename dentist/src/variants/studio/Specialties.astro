@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { SpecialtiesSection } from "../../data/types.ts";
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 }
 
 const { specialties } = Astro.props;
+const hasImages = specialties.items.some((item) => item.image);
 ---
 
 {/*
@@ -18,13 +20,35 @@ const { specialties } = Astro.props;
 
   The first entry starts open so the pattern explains itself.
 */}
-<section class="border-t border-line py-20 md:py-28">
+<section class="specialties border-t border-line py-20 md:py-28">
   <div class="shell grid gap-12 md:grid-cols-12 md:gap-8">
     <div class="md:col-span-5">
-      <div class="md:sticky md:top-12">
+      <div class="md:sticky md:top-28">
         <h2 class="font-display text-heading">{specialties.title}</h2>
         {specialties.intro && (
           <p class="measure mt-5 text-lead text-ink-soft">{specialties.intro}</p>
+        )}
+        {/* Every picture is stacked in the same frame; the open entry in the
+            list decides which one is visible, through :has(). No script, and
+            with nothing open the first one stays. Entries without an image
+            leave the last one shown. */}
+        {hasImages && (
+          <div class="specialty-frame relative mt-10 hidden aspect-4/5 max-w-[380px] overflow-hidden bg-surface md:block">
+            {specialties.items.map((item, index) =>
+              item.image && (
+                <Image
+                  src={item.image.src}
+                  alt=""
+                  widths={[380, 760]}
+                  sizes="380px"
+                  loading="eager"
+                  decoding="async"
+                  data-index={index}
+                  class="specialty-img absolute inset-0 size-full object-cover"
+                />
+              ),
+            )}
+          </div>
         )}
       </div>
     </div>
@@ -44,6 +68,53 @@ const { specialties } = Astro.props;
 </section>
 
 <style>
+  .specialty-img {
+    opacity: 0;
+    transform: scale(1.06);
+    transition: opacity 0.6s ease, transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .specialties:not(:has(details[open])) .specialty-img[data-index="0"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(1)[open]) .specialty-img[data-index="0"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(2)[open]) .specialty-img[data-index="1"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(3)[open]) .specialty-img[data-index="2"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(4)[open]) .specialty-img[data-index="3"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(5)[open]) .specialty-img[data-index="4"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(6)[open]) .specialty-img[data-index="5"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(7)[open]) .specialty-img[data-index="6"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .specialties:has(details:nth-of-type(8)[open]) .specialty-img[data-index="7"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .specialty-img {
+      transition: none;
+    }
+  }
+
   .specialty summary::-webkit-details-marker {
     display: none;
   }

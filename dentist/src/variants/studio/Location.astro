@@ -44,7 +44,7 @@ const year = new Date().getFullYear();
   )}
 
   <div class="shell flex min-h-[70svh] flex-col justify-end gap-10 py-20 md:flex-row md:items-end md:justify-between md:py-28">
-    <h2 class="max-w-[16ch] font-display text-display font-light text-balance">
+    <h2 class="closing-title max-w-[18ch] font-display font-light text-balance">
       {closing.headline}
     </h2>
 
@@ -65,12 +65,36 @@ const year = new Date().getFullYear();
   </div>
 </section>
 
+<style>
+  /* Between the heading and display sizes: large enough to close the page,
+     short enough to stay on two or three lines beside the button. */
+  .closing-title {
+    font-size: clamp(2.5rem, 1rem + 4.6vw, 5.25rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+</style>
+
 <footer class="bg-inverted-background text-inverted-ink-soft">
-  <div class="shell border-t border-inverted-ink-soft/25 py-14 pb-32 md:py-16 md:pb-16">
+  <div class="shell py-14 pb-32 md:py-16 md:pb-16">
     <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-12 md:gap-8">
       <div class="md:col-span-4">
-        <p class="text-lead font-medium text-inverted-ink">{brand.name}</p>
-        {brand.tagline && <p class="mt-2 max-w-[30ch]">{brand.tagline}</p>}
+        {/* A light wordmark, when the client has one, signs the page; the
+            name in type otherwise. */}
+        {brand.wordmark?.light ? (
+          <Image
+            src={brand.wordmark.light.src}
+            alt={brand.name}
+            widths={[200, 400]}
+            sizes="200px"
+            loading="lazy"
+            decoding="async"
+            class="h-auto w-[168px] md:w-[200px]"
+          />
+        ) : (
+          <p class="text-lead font-medium text-inverted-ink">{brand.name}</p>
+        )}
+        {brand.tagline && <p class="mt-5 max-w-[30ch]">{brand.tagline}</p>}
       </div>
 
       {location && (

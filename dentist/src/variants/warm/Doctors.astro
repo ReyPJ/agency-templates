@@ -30,6 +30,7 @@ const { doctors } = Astro.props;
         <Image
           src={doctors.groupPhoto.src}
           alt={doctors.groupPhoto.alt}
+          style={doctors.groupPhoto.focus ? `object-position: ${doctors.groupPhoto.focus}` : undefined}
           widths={[640, 960, 1280, 1600, 2000]}
           sizes="(min-width: 1360px) 1232px, 100vw"
           loading="lazy"

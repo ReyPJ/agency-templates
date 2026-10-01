@@ -15,7 +15,7 @@ const { services, ctaUrl } = Astro.props;
   form says plainly "this is what it costs" instead of dressing it as a
   pricing table with tiers and checkmarks.
 */}
-<section class="bg-surface py-20 md:py-28">
+<section id="precios" class="scroll-mt-16 bg-surface py-20 md:py-28">
   <div class="shell grid gap-12 md:grid-cols-12 md:gap-8">
     <div class="md:col-span-5">
       <h2 class="font-display text-heading">{services.title}</h2>
@@ -66,5 +66,21 @@ const { services, ctaUrl } = Astro.props;
     background-repeat: repeat-x;
     background-position: left bottom 0.28em;
     opacity: 0.6;
+  }
+
+  /* The leaders run out from the name toward the price as the list scrolls
+     into view, so the eye is carried across to the number. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .leader {
+        transform-origin: left;
+        animation: draw linear both;
+        animation-timeline: view();
+        animation-range: entry 20% cover 40%;
+      }
+      @keyframes draw {
+        from { transform: scaleX(0); }
+      }
+    }
   }
 </style>

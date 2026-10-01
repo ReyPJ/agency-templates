@@ -1,6 +1,7 @@
 ---
 import type { Clinic } from "../../data/types.ts";
 import { whatsappUrl } from "../../data/validate.ts";
+import { Image } from "astro:assets";
 import WhatsAppIcon from "../../components/icons/WhatsAppIcon.astro";
 
 interface Props {
@@ -16,14 +17,21 @@ const { brand, contact } = clinic;
   half, so the actions carry their own background there: a pill that stays
   legible over any picture instead of white text gambling on the image.
 */}
-<header class="absolute inset-x-0 top-0 z-10">
-  <nav aria-label="Principal" class="shell flex items-center justify-between py-6 md:py-8">
+<div class="scroll-progress" aria-hidden="true"></div>
+<header class="site-nav fixed inset-x-0 top-0 z-30">
+  <nav aria-label="Principal" class="nav-bar shell flex items-center justify-between">
     <a
       href="/"
       aria-label={`${brand.name} — inicio`}
       class="text-lead font-medium tracking-tight text-ink"
     >
-      {brand.name}
+      {/* A crisp wordmark earns the nav; a low-resolution square logo never
+          does, so without one the name is set in type. */}
+      {brand.wordmark ? (
+        <Image src={brand.wordmark.dark.src} alt={brand.name} widths={[120, 240]} sizes="120px" loading="eager" class="h-auto w-[104px] md:w-[120px]" />
+      ) : (
+        brand.name
+      )}
     </a>
 
     <ul class="flex items-center gap-2">
@@ -49,3 +57,52 @@ const { brand, contact } = clinic;
     </ul>
   </nav>
 </header>
+
+<style>
+  /* Fixed, and it earns a ground as soon as the page moves: transparent over
+     the hero, then frosted concrete with a hairline once there is content
+     underneath. The bar also tightens. All of it is driven by the scroll
+     position itself, so there is no listener and no jank. */
+  .nav-bar {
+    padding-block: 24px;
+  }
+  @media (min-width: 768px) {
+    .nav-bar {
+      padding-block: 32px;
+    }
+  }
+  .site-nav {
+    border-bottom: 1px solid transparent;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .site-nav {
+      animation: nav-ground linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 180px;
+    }
+    .nav-bar {
+      animation: nav-tighten linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 180px;
+    }
+  }
+  @supports not (animation-timeline: scroll()) {
+    .site-nav {
+      position: absolute;
+    }
+  }
+
+  @keyframes nav-ground {
+    to {
+      background-color: color-mix(in oklab, var(--color-background) 86%, transparent);
+      border-bottom-color: var(--color-line);
+      backdrop-filter: blur(14px);
+    }
+  }
+  @keyframes nav-tighten {
+    to {
+      padding-block: 12px;
+    }
+  }
+</style>

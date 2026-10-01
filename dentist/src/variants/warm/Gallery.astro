@@ -28,6 +28,7 @@ const { gallery } = Astro.props;
             <Image
               src={photo.src}
               alt={photo.alt}
+              style={photo.focus ? `object-position: ${photo.focus}` : undefined}
               widths={[400, 640, 900]}
               sizes="(min-width: 768px) 30vw, 78vw"
               loading="lazy"

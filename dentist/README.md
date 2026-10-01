@@ -22,7 +22,7 @@ clínicas con esta plantilla no parezcan el mismo sitio. Se elige con
 | variante | para quién | qué la distingue |
 |---|---|---|
 | `editorial` | clientes sin fotos utilizables | solo tipografía (Instrument Serif + Inter), titular gigante, cero imágenes salvo retratos |
-| `studio` | clínicas con un espacio que vale la pena mostrar | foto a media pantalla en el hero, lista de precios con guías, galería que se revela al hacer scroll, especialidades en acordeón, cierre sobre foto (Jost) |
+| `studio` | clínicas con un espacio que vale la pena mostrar | foto a media pantalla con parallax y tarjeta de precio, nav fijo que se esmerila al bajar con barra de progreso, lista de precios con guías que se dibujan, galería con revelado, especialidades en acordeón con foto que cambia según la abierta, cierre sobre foto (Jost) |
 | `warm` | consultorios familiares, pediatría, trato cercano | fotos en forma de arco, sello de calificación, la gente primero, mosaico de especialidades, bloques redondeados (Young Serif + Figtree) |
 
 Para enseñarle las tres a un cliente con sus propios datos, sin tocar nada:
@@ -49,10 +49,29 @@ Campos que solo usan algunas variantes (todos opcionales):
 | `gallery` | — | ✓ | ✓ |
 | `doctors.groupPhoto` | — | ✓ | ✓ |
 | `closing.image` | — | ✓ | — |
+| `specialties.items[].image` | — | ✓ | — |
+| `brand.wordmark` (`dark` / `light`) | — | ✓ | — |
+| `focus` en cualquier foto | — | ✓ | ✓ |
 | `services` (precios) | ✓ | ✓ | ✓ |
 | `contact.social` | ✓ | ✓ | ✓ |
 
+`focus` es el `object-position` del recorte (`"50% 20%"`): úsalo cuando una
+foto se corta a otra proporción y se pierde una cara o el logo.
+
+`brand.wordmark` es para clientes con un logo nítido y transparente (PNG o
+SVG): studio lo pone en el nav y, en versión clara, firma el footer oscuro.
+`brand.logo` sigue siendo el cuadrado del favicon y no sube al nav.
+
+En studio, la tarjeta flotante del hero muestra el **primer** servicio con
+precio: pon la consulta de primera vez arriba en `services.items`.
+
 Fotos de stock para rellenar: `src/assets/stock/` (ver su README).
+
+Si las fotos del cliente vienen comprimidas (WhatsApp, Instagram), escálalas
+antes de importarlas: Real-ESRGAN `realesrgan-x4plus` a 4×, mezclado 80/20
+con el original ampliado con Lanczos y un grano fino, con un tope de 2400 px.
+La IA sola deja la piel plástica; más fuerza o una doble pasada se ve peor.
+Si aun así una foto queda débil, no la pongas en el hero.
 
 ## Cómo se adapta a un cliente nuevo
 
@@ -153,9 +172,16 @@ bundle**. Toda animación es CSS y está envuelta en
 `prefers-reduced-motion: no-preference`, de modo que reducir movimiento es el
 estado base. Cada variante tiene un solo momento orquestado al cargar (el
 titular en editorial, la foto que se abre en studio, el arco que sube en
-warm). Las fotos de studio y warm se revelan al entrar en pantalla con
-`animation-timeline: view()`; el navegador que no lo soporta simplemente las
-muestra. El acordeón de studio es `<details name>`, sin script.
+warm). El acordeón de studio es `<details name>` y la foto de cada
+especialidad se cambia con `:has()`, sin script. El nav, la barra de progreso
+y el parallax de studio van con `animation-timeline: scroll()`.
+
+La única excepción a "cero JavaScript" son dos scripts inline en el layout,
+de una docena de líneas: marcan `html.js` antes de pintar y revelan cada foto
+**una sola vez** al entrar en pantalla (IntersectionObserver). Una versión
+ligada al scroll se veía a saltos con la rueda del mouse y se revertía al
+subir. Sin JavaScript, o con movimiento reducido, las fotos simplemente
+están.
 
 Los tests corren con `node:test`, sin framework. `test/image-loader.js` enseña
 a Node qué es un `.jpg`, porque esos imports solo los resuelve el bundler.

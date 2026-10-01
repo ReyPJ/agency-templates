@@ -1,14 +1,20 @@
 ---
 import { Image } from "astro:assets";
-import type { Hero, Rating } from "../../data/types.ts";
+import type { Hero, Rating, Services } from "../../data/types.ts";
 
 interface Props {
   hero: Hero;
   rating?: Rating;
   ctaUrl: string;
+  services?: Services;
 }
 
-const { hero, rating, ctaUrl } = Astro.props;
+const { hero, rating, ctaUrl, services } = Astro.props;
+const firstVisit = services?.items.find((item) => item.price);
+// The display size is set for short, punchy lines ("Diseñamos"). A longer
+// line at that size breaks in two inside the copy column, so the headline
+// steps down when its longest line passes a dozen characters.
+const longHeadline = Math.max(...hero.headline.map((line) => line.length)) > 11;
 ---
 
 {/*
@@ -29,7 +35,7 @@ const { hero, rating, ctaUrl } = Astro.props;
   ]}
 >
   <div class="hero-copy flex flex-col justify-end pt-32 pb-12 md:pt-40 md:pb-16">
-    <h1 class="font-display text-display font-light">
+    <h1 class:list={["font-display text-display font-light", longHeadline && "hero-long"]}>
       {hero.headline.map((line) => <span class="hero-line block">{line}</span>)}
     </h1>
 
@@ -56,19 +62,35 @@ const { hero, rating, ctaUrl } = Astro.props;
 
   {hero.image && (
     <figure class="hero-figure relative h-[62svh] overflow-hidden md:h-[70svh] lg:h-auto">
-      <Image
-        src={hero.image.src}
-        alt={hero.image.alt}
-        widths={[640, 960, 1280, 1600, 2000]}
-        sizes="(min-width: 1024px) 42vw, 100vw"
-        loading="eager"
-        fetchpriority="high"
-        class="hero-img absolute inset-0 size-full object-cover"
-      />
+      <div class="hero-parallax absolute inset-x-0 -top-[6%] h-[112%]">
+        <Image
+          src={hero.image.src}
+          alt={hero.image.alt}
+              style={hero.image.focus ? `object-position: ${hero.image.focus}` : undefined}
+          widths={[640, 960, 1280, 1600]}
+          sizes="(min-width: 1024px) 42vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="hero-img absolute inset-0 size-full object-cover"
+        />
+      </div>
       {hero.image.caption && (
-        <figcaption class="absolute bottom-0 left-0 bg-background px-4 py-3 text-small text-ink-soft">
+        <figcaption class="absolute top-24 right-0 bg-background px-4 py-3 text-small text-ink-soft md:top-28">
           {hero.image.caption}
         </figcaption>
+      )}
+
+      {/* The first published price, pinned to the picture — list the entry
+          visit first in services.items so this is the one that shows. Proof that this
+          clinic says what things cost sits where the eye already is. */}
+      {firstVisit?.price && (
+        <a
+          href="#precios"
+          class="price-card absolute bottom-6 left-6 flex items-center gap-5 bg-background px-6 py-5 text-ink transition-colors hover:bg-surface md:bottom-10 md:left-10"
+        >
+          <span class="max-w-[12ch] text-small leading-tight text-ink-soft">{firstVisit.name}</span>
+          <span class="text-heading font-light tabular-nums">{firstVisit.price}</span>
+        </a>
       )}
     </figure>
   )}
@@ -80,6 +102,9 @@ const { hero, rating, ctaUrl } = Astro.props;
      right of the screen. */
   .hero-copy {
     padding-inline: 24px;
+  }
+  .hero-long {
+    font-size: clamp(2.75rem, 0.9rem + 5.6vw, 6.75rem);
   }
   @media (min-width: 768px) {
     .hero-copy {
@@ -109,6 +134,27 @@ const { hero, rating, ctaUrl } = Astro.props;
        camera coming to rest rather than a rectangle being wiped in. */
     .hero-img {
       animation: settle 2.2s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    }
+
+    .price-card {
+      animation: card-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 1.05s backwards;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(16px); }
+    }
+
+    /* After the load the picture drifts slower than the page, a small depth
+       cue tied to scroll. It runs on the figure, not the image, so it never
+       fights the settle animation. */
+    @supports (animation-timeline: scroll()) {
+      .hero-parallax {
+        animation: drift linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100vh;
+      }
+      @keyframes drift {
+        to { transform: translateY(5%); }
+      }
     }
 
     @keyframes rise {

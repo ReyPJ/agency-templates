@@ -46,6 +46,7 @@ const { hero, rating, ctaUrl } = Astro.props;
         <Image
           src={hero.image.src}
           alt={hero.image.alt}
+          style={hero.image.focus ? `object-position: ${hero.image.focus}` : undefined}
           widths={[480, 720, 960, 1280]}
           sizes="(min-width: 1024px) 40vw, 460px"
           loading="eager"

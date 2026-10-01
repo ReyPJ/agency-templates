@@ -25,6 +25,9 @@ export interface Image {
  *  picture is — "Recepción" — never a slogan. */
 export interface Photo extends Image {
   caption?: string;
+  /** CSS object-position for the crop, e.g. "50% 20%". Keeps faces and the
+   *  logo inside the frame when a picture is cut to a different ratio. */
+  focus?: string;
 }
 
 /** Each variant is a complete set of sections built over the same data, so
@@ -40,6 +43,10 @@ export interface Brand {
   tagline?: string;
   /** Favicon and the closing mark of the location section, never the nav. */
   logo?: Image;
+  /** A crisp, transparent wordmark (PNG or SVG), as opposed to `logo`, which
+   *  is often a low-resolution square. When present, studio sets it in the
+   *  nav (`dark`) and signs the dark footer with it (`light`). */
+  wordmark?: { dark: Image; light?: Image };
   /** Health-authority registration. Almost no competitor publishes theirs,
    *  so it is a cheap and real credibility marker in the colophon. */
   registration?: { label: string; value: string };
@@ -99,6 +106,8 @@ export interface Doctor {
 export interface Specialty {
   name: string;
   solves: string;
+  /** Studio shows it beside the list while this entry is open. */
+  image?: Image;
 }
 
 /* Doctors and specialties are sections like any other, so they carry their

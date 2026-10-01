@@ -10,6 +10,11 @@ import escaneo from "../assets/stock/escaneo-3d.jpg";
 import consulta from "../assets/stock/consulta.jpg";
 import instrumental from "../assets/stock/instrumental.jpg";
 import salaLuz from "../assets/stock/sala-luz.jpg";
+import alineadores from "../assets/stock/alineadores.jpg";
+import sonrisaNatural from "../assets/stock/sonrisa-natural.jpg";
+import ninoConsulta from "../assets/stock/nino-consulta.jpg";
+import sonrisaDetalle from "../assets/stock/sonrisa-detalle.jpg";
+import modeloImplante from "../assets/stock/modelo-implante.jpg";
 
 // Everything that changes between clients lives in this file. Components never
 // name a client, so a new one is resolved here and nowhere else.
@@ -128,36 +133,43 @@ const data: Clinic = {
         name: "Ortodoncia",
         solves:
           "Mueve los dientes y la mandíbula a su lugar, con brackets o con alineadores. No es solo cómo se ve: es cómo muerdes.",
+        image: { src: alineadores, alt: "Manos sosteniendo alineadores transparentes" },
       },
       {
         name: "Endodoncia",
         solves:
           "Cuando la infección llega al nervio, se limpia el diente por dentro. Es lo que evita tener que sacarlo.",
+        image: { src: modeloDiente, alt: "Modelo de un diente con sus capas internas" },
       },
       {
         name: "Periodoncia",
         solves:
           "Encías que sangran, se inflaman o se retiran, y el hueso que sostiene los dientes. Desde una gingivitis hasta una periodontitis avanzada.",
+        image: { src: sonrisaNatural, alt: "Sonrisa natural con encías sanas" },
       },
       {
         name: "Odontopediatría",
         solves:
           "Bebés, niños y adolescentes. Se previenen caries, se vigila cómo van saliendo los dientes y se arman hábitos que duran.",
+        image: { src: ninoConsulta, alt: "Niño en revisión dental" },
       },
       {
         name: "Estética Dental",
         solves:
           "Color, forma y proporción de la sonrisa: blanqueamiento, carillas, composite y diseño de sonrisa.",
+        image: { src: sonrisaDetalle, alt: "Sonrisa en primer plano con dientes blancos" },
       },
       {
         name: "Cirugía Oral",
         solves:
           "Muelas del juicio, frenillos, quistes, injertos de hueso y todo lo que hay que hacer antes de un implante.",
+        image: { src: instrumental, alt: "Instrumental dental esterilizado" },
       },
       {
         name: "Implantología",
         solves:
           "Un implante de titanio ocupa el lugar del diente que perdiste y se integra al hueso. Función y estética, de forma permanente.",
+        image: { src: modeloImplante, alt: "Modelo de un implante dental junto a dientes naturales" },
       },
     ],
   },
